@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                offWorkInfo: '123',
+                overtimeInfo: '123',
+                businessOutInfo: '123',
+                doneInfo: '123',
+                planInfo: '123',
+                problemInfo: '123',
+                projectInfo: '123',
+            },
+            submit: function () {
+                axios.post('/week_report', {
+                    offWorkInfo: this.data.offWorkInfo,
+                    overtimeInfo: this.data.overtimeInfo,
+                    businessOutInfo: this.data.businessOutInfo,
+                    doneInfo: this.data.doneInfo,
+                    planInfo: this.data.planInfo,
+                    problemInfo: this.data.problemInfo,
+                    projectInfo: this.data.projectInfo,
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        })
+    </script>
+</head>
+<body>
+<div id="app">
+    <label>考勤信息</label>
+    <li>请假情况</li>
+    <input v-model="offWorkInfo" placeholder="请添加">
+    <li>加班情况</li>
+    <input v-model="overtimeInfo" placeholder="请添加">
+    <li>出差情况</li>
+    <input v-model="businessOutInfo" placeholder="请添加">
+</div>
+<br>
+<div>
+    <label>项目信息</label>
+    <!--todo:解决多个项目的兼容问题-->
+    <!--需要能够动态添加行;-->
+    <li>参加项目</li>
+    <li>角色</li>
+    <li>投入比例</li>
+</div>
+<br>
+<div>
+    <label>本周工作完成情况</label>
+    <textarea v-model="doneInfo" placeholder="请添加"></textarea>
+</div>
+<br>
+<div>
+    <label>下周工作计划</label>
+    <textarea v-model="planInfo" placeholder="请添加"></textarea>
+</div>
+<br>
+<div>
+    <label>风险及问题</label>
+    <textarea v-model="problemInfo" placeholder="请添加"></textarea>
+</div>
+</div>
+<br>
+<button @click="submit">提交</button>
+</body>
+</html>
