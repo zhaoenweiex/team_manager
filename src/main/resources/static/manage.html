@@ -6,28 +6,36 @@
     <title>周报管理</title>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        .row{
+            margin: 10px;
+        }
+        .col{
+            margin:10px;
+        }
+
+    </style>
 </head>
 <body>
 <!--若是普通用户则展示自己的，若是管理员则展示本组织机构对应周报-->
 <div id="app">
-    <li v-for="(report,index) in reports">
-        <span>{{ index+1 }}</span>
-        <span>{{ report.doneInfo }}</span>
-        <span>{{ report.planInfo }}</span>
-        <span>{{ report.problemInfo }}</span>
+    <li class="row" v-for="(report,index) in reports">
+        <span class="col">{{ index+1 }}</span>
+        <span class="col">{{ report.doneInfo }}</span>
+        <span class="col">{{ report.planInfo }}</span>
+        <span class="col">{{ report.problemInfo }}</span>
     </li>
 </div>
 <script>
-    var app = new Vue({
+    var VM = new Vue({
         el: '#app',
         data: {
-            reports: []
+            reports: [{doneInfo: '123',planInfo: '123',problemInfo: '123',}]
         },
         mounted: function () {
-           var that=this;
+            var that = this;
             this.$nextTick(function () {
-                axios.get('/week_report', {}).
-                then(function (response) {
+                axios.get('/week_report', {}).then(function (response) {
                     that.reports = response.data;
                     console.log(response);
                 })
