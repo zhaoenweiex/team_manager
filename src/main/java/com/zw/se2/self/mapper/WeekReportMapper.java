@@ -12,9 +12,9 @@ import java.util.List;
  */
 @Mapper
 public interface WeekReportMapper {
-    @Select("select * from week_report")
+    @Select( "select * from week_report")
     List<WeekReport> findAll();
-    @Insert("insert into week_report(user_id,done_info,plan_info,problem_info) values(#{userId},#{doneInfo},#{planInfo},#{problemInfo})")
+    @Insert("insert into week_report(create_time,user_id,done_info,plan_info,problem_info,project_info) values(#{userId},#{createTime},#{doneInfo},#{planInfo},#{problemInfo},#{projectInfo})")
     Boolean create(WeekReport weekReport);
     @Select("select * from week_report where (user_id) = (#{userId})")
     List<WeekReport> findAllByUserId(Integer userId);

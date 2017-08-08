@@ -9,13 +9,20 @@ public class WeekReport {
     private String doneInfo;
     private String planInfo;
     private String problemInfo;
-    private String projectName;
-    private String roleName;
+    private String projectInfo;
     private String offWorkInfo;//请假
     private String overtimeInfo;//加班
     private String businessOutInfo;//出差信息
     private Integer userId;
+    private Integer orgId;
 
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
     @Override
     public String toString() {
         return "WeekReport{" +
@@ -24,15 +31,13 @@ public class WeekReport {
                 ", doneInfo='" + doneInfo + '\'' +
                 ", planInfo='" + planInfo + '\'' +
                 ", problemInfo='" + problemInfo + '\'' +
-                ", projectName='" + projectName + '\'' +
-                ", roleName='" + roleName + '\'' +
+                ", projectInfo='" + projectInfo + '\'' +
                 ", offWorkInfo='" + offWorkInfo + '\'' +
                 ", overtimeInfo='" + overtimeInfo + '\'' +
                 ", businessOutInfo='" + businessOutInfo + '\'' +
-                ", userId='" + userId + '\'' +
+                ", userId=" + userId +
                 '}';
     }
-
 
     public Integer getUserId() {
         return userId;
@@ -83,20 +88,12 @@ public class WeekReport {
     }
 
 
-    public String getProjectName() {
-        return projectName;
+    public String getProjectInfo() {
+        return projectInfo;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setProjectInfo(String projectInfo) {
+        this.projectInfo = projectInfo;
     }
 
     public String getOffWorkInfo() {

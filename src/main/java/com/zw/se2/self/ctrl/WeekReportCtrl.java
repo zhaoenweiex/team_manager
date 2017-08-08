@@ -18,7 +18,7 @@ import java.util.List;
  * Created by zhaoenwei on 2017/7/26.
  */
 @RestController
-@RequestMapping("/week_report/")
+@RequestMapping("/week_report")
 public class WeekReportCtrl {
     @Autowired
     private WeekReportService service;
@@ -27,6 +27,7 @@ public class WeekReportCtrl {
     //提交周报
     @PostMapping
     public String createReport(@RequestBody WeekReport weekReport){
+       weekReport.setCreateTime(System.currentTimeMillis());
         service.create(weekReport);
         return "success";
     }
@@ -34,7 +35,6 @@ public class WeekReportCtrl {
     //查询
     @GetMapping
     public List<WeekReport> getReport(WeekReport weekReport){
-
         return  service.search(weekReport);
     }
     //导出

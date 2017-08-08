@@ -13,4 +13,6 @@ import java.util.List;
 public interface UserMapper {
     @Select("select * from user")
     List<User> findAll();
+    @Select("select * from user  where (user_name) = (#{userName} and (password)=(#{password})")
+    User findByNameAndPsw(String userName,String password);
 }
