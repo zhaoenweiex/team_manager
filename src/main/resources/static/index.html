@@ -3,20 +3,38 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>周报管理</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
 <body>
-<div id="app">
-    {{ message }}
+<!--提交周報-->
+<!--周报查询-->
+<div id="app" class="container">
+    <h2>欢迎你，{{userName}}</h2>
+    <li><button class="btn btn-default" type="button">提交周报</button></li>
+    <li><button class="btn btn-default" type="button">个人周报管理</button></li>
+    <li><button class="btn btn-default" type="button">团队周报管理</button></li>
 </div>
-<script src="https://unpkg.com/vue"></script>
 <script>
-    var app = new Vue({
+    var VM = new Vue({
         el: '#app',
         data: {
-            message: 'Hello Vue!'
-        }
+            userName: "赵恩伟"
+        },
+        mounted: function () {
+
+        },
+        methods: {}
     })
 </script>
 </body>
