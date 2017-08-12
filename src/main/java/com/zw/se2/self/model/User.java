@@ -5,9 +5,35 @@ package com.zw.se2.self.model;
  */
 public class User {
     private Long id;
-    private String name;
-    private String type;
+    private String name;//用户名
+    private String password;//密码
+    private String type;//人员类型
+    private Long orgId;//组织机构id
+    private String trueName;//真实姓名
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getTrueName() {
+        return trueName;
+    }
+
+    public void setTrueName(String trueName) {
+        this.trueName = trueName;
+    }
 
     public String getType() {
         return type;
