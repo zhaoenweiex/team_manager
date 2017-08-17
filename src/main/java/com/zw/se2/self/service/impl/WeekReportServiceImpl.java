@@ -35,8 +35,8 @@ public class WeekReportServiceImpl implements WeekReportService {
     }
 
     @Override
-    public List<WeekReport> search(WeekReport weekReport) {
-        return weekReportMapper.findAll();
+    public List<WeekReport> searchByOrgId(WeekReport weekReport) {
+        return weekReportMapper.findByOrgId(weekReport);
     }
 
     @Override

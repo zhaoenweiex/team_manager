@@ -20,4 +20,10 @@ public class UserServiceImpl implements UserService {
     public User findByNameAndPsw(String userName, String password) {
         return userMapper.findByNameAndPsw(userName,password);
     }
+
+    @Override
+    public User add(User user) {
+        userMapper.insert(user);
+        return user;
+    }
 }

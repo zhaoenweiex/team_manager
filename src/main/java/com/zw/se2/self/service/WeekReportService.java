@@ -10,7 +10,7 @@ import java.util.List;
 public interface WeekReportService {
     void create(WeekReport weekReport);
 
-    List<WeekReport> search(WeekReport weekReport);
+    List<WeekReport> searchByOrgId(WeekReport weekReport);
 
     List<WeekReport> findReportsByIds(String[] ids);
 

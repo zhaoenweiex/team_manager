@@ -25,4 +25,12 @@ public interface WeekReportMapper {
     List<WeekReport> findAllByUserId(Integer userId);
     @Select("select * from week_report where id in (#{ids})")
     List<WeekReport> findInIds(String[] ids);
+    @Select( "select done_info,plan_info,problem_info from week_report where 1=1 and org_id =#{orgId}")
+    @Results(value = {
+            @Result(id = true, property = "id", column = "id", javaType = Integer.class, jdbcType = JdbcType.BIGINT),
+            @Result(property = "doneInfo", column = "done_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "planInfo", column = "plan_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "problemInfo", column = "problem_info", javaType = String.class, jdbcType = JdbcType.VARCHAR)
+    })
+    List<WeekReport> findByOrgId(WeekReport weekReport);
 }

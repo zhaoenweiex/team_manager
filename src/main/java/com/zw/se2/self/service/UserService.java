@@ -7,4 +7,6 @@ import com.zw.se2.self.model.User;
  */
 public interface UserService {
     User findByNameAndPsw(String userName, String password);
+
+    User add(User user);
 }

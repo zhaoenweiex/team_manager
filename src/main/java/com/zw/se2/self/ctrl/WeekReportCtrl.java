@@ -35,7 +35,7 @@ public class WeekReportCtrl {
     //查询
     @GetMapping
     public List<WeekReport> getReport(WeekReport weekReport){
-        return  service.search(weekReport);
+        return  service.searchByOrgId(weekReport);
     }
     //导出
     @GetMapping("export/team")
