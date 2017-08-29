@@ -20,7 +20,7 @@
 </head>
 <body>
 <div id="app" class="container">
-    <h2>班组周报</h2>
+    <h2>{{weekReportType}}</h2>
     <!--若是普通用户则展示自己的，若是管理员则展示本组织机构对应周报-->
     <table class="table table-striped" >
         <tr>
@@ -38,23 +38,45 @@
     </table>
 
 </div>
+<script src="./CommonUtil.js"></script>
 <script>
     var VM = new Vue({
         el: '#app',
         data: {
+            weekReportType:"",
             reports: [{doneInfo: '123', planInfo: '123', problemInfo: '123',}]
         },
         mounted: function () {
             var that = this;
-            this.$nextTick(function () {
-                axios.get('/week_report', {}).then(function (response) {
-                    that.reports = response.data;
-                    console.log(response);
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            });
+            var type=getCookie("type");
+            if(type==="admin"){
+                this.weekReportType="班组周报";
+                this.$nextTick(function () {
+                    axios.get('/week_report?orgId='+getCookie("orgId"), {
+                    }).then(function (response) {
+                        that.reports = response.data;
+                        console.log(response);
+
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                });
+            }else{
+                this.weekReportType="个人周报";
+                this.$nextTick(function () {
+                    axios.get('/week_report?userId='+getCookie("userId"), {
+                    }).then(function (response) {
+                        that.reports = response.data;
+                        console.log(response);
+
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                });
+            }
+
 
         },
         methods: {}

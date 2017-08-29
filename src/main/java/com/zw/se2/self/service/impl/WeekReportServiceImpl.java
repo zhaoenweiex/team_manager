@@ -52,4 +52,9 @@ public class WeekReportServiceImpl implements WeekReportService {
 
         return filePath;
     }
+
+    @Override
+    public List<WeekReport> searchByUserId(WeekReport weekReport) {
+        return weekReportMapper.findByUserId(weekReport);
+    }
 }

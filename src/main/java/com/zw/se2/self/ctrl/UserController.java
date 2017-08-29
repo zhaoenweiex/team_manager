@@ -21,7 +21,8 @@ public class UserController {
     public User login(@RequestBody User user){
         String userName=user.getName();
         String password=user.getPassword();
-        return userService.findByNameAndPsw(userName,password);
+        User userDB=userService.findByNameAndPsw(userName,password);
+        return userDB;
     }
     @PostMapping
     public  User create(User user){

@@ -16,4 +16,5 @@ public interface WeekReportService {
 
     String generateReport(List<WeekReport> reports);
 
+    List<WeekReport> searchByUserId(WeekReport weekReport);
 }

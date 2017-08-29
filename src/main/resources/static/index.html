@@ -21,9 +21,8 @@
 <!--周报查询-->
 <div id="app" class="container">
     <h2>欢迎你，{{userName}}</h2>
-    <li><button class="btn btn-default" type="button">提交周报</button></li>
-    <li><button class="btn btn-default" type="button">个人周报管理</button></li>
-    <li><button class="btn btn-default" type="button">团队周报管理</button></li>
+    <li><button class="btn btn-default" type="button" v-on:click="post">提交周报</button></li>
+    <li><button class="btn btn-default" type="button" v-on:click="manage">周报管理</button></li>
 </div>
 <script>
     var VM = new Vue({
@@ -34,7 +33,14 @@
         mounted: function () {
 
         },
-        methods: {}
+        methods: {
+            post: function () {
+                self.location='post.html';
+            },
+            manage: function () {
+                self.location='manage.html';
+            }
+        }
     })
 </script>
 </body>

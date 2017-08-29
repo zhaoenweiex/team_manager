@@ -22,35 +22,39 @@ import java.util.List;
 public class WeekReportCtrl {
     @Autowired
     private WeekReportService service;
-    private static final Logger logger= LoggerFactory.getLogger(WeekReportCtrl.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeekReportCtrl.class);
 
     //提交周报
     @PostMapping
-    public String createReport(@RequestBody WeekReport weekReport){
-       weekReport.setCreateTime(System.currentTimeMillis());
+    public String createReport(@RequestBody WeekReport weekReport) {
+        weekReport.setCreateTime(System.currentTimeMillis());
         service.create(weekReport);
         return "success";
     }
 
     //查询
     @GetMapping
-    public List<WeekReport> getReport(WeekReport weekReport){
-        return  service.searchByOrgId(weekReport);
+    public List<WeekReport> getReport(WeekReport weekReport) {
+        if (weekReport.getOrgId() != null)
+            return service.searchByOrgId(weekReport);
+        else
+            return service.searchByUserId(weekReport);
     }
+
     //导出
     @GetMapping("export/team")
-    public void exportWord(String[] ids,HttpServletResponse response){
+    public void exportWord(String[] ids, HttpServletResponse response) {
         //生成查询的结果
-        List<WeekReport> reports= service.findReportsByIds(ids);
+        List<WeekReport> reports = service.findReportsByIds(ids);
         //生成汇总报告
-        String reportPath=service.generateReport(reports);
-        File targetFile=new File(reportPath);
+        String reportPath = service.generateReport(reports);
+        File targetFile = new File(reportPath);
         //文件流导出
         FileInputStream inputStream = null;
         try {
             //将压缩文件流写入到http的返回数据流
             response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", "attachment;fileName="+"tmp.pdf");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + "tmp.pdf");
             ServletOutputStream outputHttpStream = response.getOutputStream();
             inputStream = new FileInputStream(targetFile);
             int lenZipFile;
