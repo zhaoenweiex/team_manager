@@ -14,7 +14,16 @@ public class WeekReport {
     private String overtimeInfo;//加班
     private String businessOutInfo;//出差信息
     private Integer userId;
+    private String userName;//用户名称
     private Integer orgId;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Integer getOrgId() {
         return orgId;
