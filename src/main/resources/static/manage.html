@@ -81,8 +81,8 @@
         },
         methods: {
             exportWord:function () {
-                var ids=[5,7,8];
-                axios.post('/week_report/export/team',{ids:ids})
+                var ids=["5","7","8"];
+                axios.get('/week_report/export/word',{ids:ids})
                     .then(function (response) {
                     console.log(response);
 

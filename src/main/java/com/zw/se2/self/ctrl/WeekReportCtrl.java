@@ -42,8 +42,9 @@ public class WeekReportCtrl {
     }
 
     //导出
-    @GetMapping("export/team")
+    @GetMapping("export/word")
     public void exportWord(String[] ids, HttpServletResponse response) {
+        ids= new String[]{"5", "6", "8"};
         //生成查询的结果
         List<WeekReport> reports = service.findReportsByIds(ids);
         //生成汇总报告

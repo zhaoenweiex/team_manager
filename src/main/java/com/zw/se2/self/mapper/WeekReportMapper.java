@@ -23,8 +23,19 @@ public interface WeekReportMapper {
     Boolean create(WeekReport weekReport);
     @Select("select * from week_report where user_id = #{userId}")
     List<WeekReport> findAllByUserId(Integer userId);
-    @Select("select * from week_report where id in (#{ids})")
-    List<WeekReport> findInIds(String[] ids);
+    @Select("select * from week_report where id in (${ids})")
+    @Results(value = {
+            @Result(id = true, property = "id", column = "id", javaType = Integer.class, jdbcType = JdbcType.BIGINT),
+            @Result(property = "doneInfo", column = "done_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "planInfo", column = "plan_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "problemInfo", column = "problem_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "userId", column = "user_id", javaType = Integer.class, jdbcType = JdbcType.INTEGER),
+            @Result(property = "projectInfo", column = "project_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "offWorkInfo", column = "off_work_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "bussinessOutInfo", column = "bussiness_out_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
+            @Result(property = "overtimeInfo", column = "overtime_info", javaType = String.class, jdbcType = JdbcType.VARCHAR)
+    })
+    List<WeekReport> findInId(@Param("ids") String ids);
     @Select( "select done_info,plan_info,problem_info from week_report where 1=1 and org_id =#{orgId}")
     @Results(value = {
             @Result(id = true, property = "id", column = "id", javaType = Integer.class, jdbcType = JdbcType.BIGINT),

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 @Service
 public class WeekReportServiceImpl implements WeekReportService {
-    private static final Logger logger= LoggerFactory.getLogger(WeekReportServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeekReportServiceImpl.class);
     @Value("${reportPath}}")
     private String reportsPath;
     @Autowired
@@ -49,56 +50,65 @@ public class WeekReportServiceImpl implements WeekReportService {
 
     @Override
     public List<WeekReport> findReportsByIds(String[] ids) {
-        return weekReportMapper.findInIds(ids);
+        StringBuilder sb = new StringBuilder();
+        for (String id : ids) {
+            sb.append(id).append(",");
+        }
+        return weekReportMapper.findInId(sb.substring(0, sb.length() - 1));
     }
 
     @Override
     public String generateReport(List<WeekReport> reports) {
         //生成报告
         String filePath = reportsPath + System.currentTimeMillis() + ".doc";
-        Map<String,List<String>> attenceInfoMap=new HashMap<>();//人员名称-请假，出差，加班
-        Map<String,Map<String,List<String>>> projectInfoMap=new HashMap<>();//项目名称-角色-人员
-        Map<String,List<String>> workInfoMap=new HashMap<>();//人员名称-工作完成情况(包含上一周计划的对比)，计划情况
+        Map<String, List<String>> attenceInfoMap = new HashMap<>();//人员名称-请假，出差，加班
+        Map<String, Map<String, List<String>>> projectInfoMap = new HashMap<>();//项目名称-角色-人员
+        Map<String, List<String>> workInfoMap = new HashMap<>();//人员名称-工作完成情况(包含上一周计划的对比)，计划情况
         for (WeekReport report : reports) {
-            List<String> employeeAttenceInfo=new ArrayList<>();
+            List<String> employeeAttenceInfo = new ArrayList<>();
             employeeAttenceInfo.add(report.getOffWorkInfo());
             employeeAttenceInfo.add(report.getBusinessOutInfo());
             employeeAttenceInfo.add(report.getOvertimeInfo());
-            attenceInfoMap.put(report.getUserName(),employeeAttenceInfo);
-
-            String[] projectInfos=report.getProjectInfo().split(";");
-            for(String projectInfoStr:projectInfos){
-                String[] projectInfo=projectInfoStr.split(",");
-                String projectName=projectInfo[0];
-                String role=projectInfo[1];
-                String ratio=projectInfo[2];
-                Map<String,List<String>> tmpProjectInfoMap=projectInfoMap.get(projectName);
-                List<String> employeeList=null;
-                if(tmpProjectInfoMap==null){
-                    tmpProjectInfoMap=new HashMap<>();
-                }else{
-                    employeeList=tmpProjectInfoMap.get(role);
-                    if(employeeList==null){
-                        employeeList=new ArrayList<>();
+            String userName = StringUtils.isEmpty(report.getUserName()) ? String.valueOf(report.getUserId()) : report.getUserName();
+            attenceInfoMap.put(userName, employeeAttenceInfo);
+            if (!StringUtils.isEmpty(report.getProjectInfo())) {
+                String[] projectInfos = report.getProjectInfo().split(";");
+                for (String projectInfoStr : projectInfos) {
+                    String[] projectInfo = projectInfoStr.split(",");
+                    if(projectInfo.length<3)
+                        continue;
+                    String projectName = projectInfo[0];
+                    String role = projectInfo[1];
+                    String ratio = projectInfo[2];
+                    Map<String, List<String>> tmpProjectInfoMap = projectInfoMap.get(projectName);
+                    List<String> employeeList = null;
+                    if (tmpProjectInfoMap == null) {
+                        tmpProjectInfoMap = new HashMap<>();
+                    } else {
+                        employeeList = tmpProjectInfoMap.get(role);
+                        if (employeeList == null) {
+                            employeeList = new ArrayList<>();
+                        }
+                        if (!employeeList.contains(report.getUserName()))
+                            employeeList.add(report.getUserName());
                     }
-                    if(!employeeList.contains(report.getUserName()))
-                        employeeList.add(report.getUserName());
+                    tmpProjectInfoMap.put(role, employeeList);
+                    projectInfoMap.put(projectName, tmpProjectInfoMap);
                 }
-                tmpProjectInfoMap.put(role,employeeList);
-                projectInfoMap.put(projectName,tmpProjectInfoMap);
             }
 
-            List<String> employeeWorkInfo=new ArrayList<>();
+
+            List<String> employeeWorkInfo = new ArrayList<>();
             employeeWorkInfo.add(report.getDoneInfo());
             employeeWorkInfo.add(report.getPlanInfo());
-            workInfoMap.put(report.getUserName(),employeeWorkInfo);
-            JSONObject jsonAttence=new JSONObject();
+            workInfoMap.put(userName, employeeWorkInfo);
+            JSONObject jsonAttence = new JSONObject();
             jsonAttence.putAll(attenceInfoMap);
             logger.info(jsonAttence.toString());
-            JSONObject jsonProject=new JSONObject();
+            JSONObject jsonProject = new JSONObject();
             jsonProject.putAll(projectInfoMap);
             logger.info(jsonProject.toString());
-            JSONObject jsonWork=new JSONObject();
+            JSONObject jsonWork = new JSONObject();
             jsonWork.putAll(workInfoMap);
             logger.info(jsonWork.toJSONString());
 
