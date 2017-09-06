@@ -25,7 +25,7 @@ import java.util.Map;
 @Service
 public class WeekReportServiceImpl implements WeekReportService {
     private static final Logger logger = LoggerFactory.getLogger(WeekReportServiceImpl.class);
-    @Value("${reportPath}}")
+    @Value("${reportPath}")
     private String reportsPath;
     @Autowired
     private WeekReportMapper weekReportMapper;
@@ -60,7 +60,7 @@ public class WeekReportServiceImpl implements WeekReportService {
     @Override
     public String generateReport(List<WeekReport> reports) {
         //生成报告
-        String filePath = reportsPath + System.currentTimeMillis() + ".doc";
+        String filePath = reportsPath +"/"+ System.currentTimeMillis() + ".doc";
         Map<String, List<String>> attenceInfoMap = new HashMap<>();//人员名称-请假，出差，加班
         Map<String, Map<String, List<String>>> projectInfoMap = new HashMap<>();//项目名称-角色-人员
         Map<String, List<String>> workInfoMap = new HashMap<>();//人员名称-工作完成情况(包含上一周计划的对比)，计划情况
@@ -81,14 +81,12 @@ public class WeekReportServiceImpl implements WeekReportService {
                     String role = projectInfo[1];
                     String ratio = projectInfo[2];
                     Map<String, List<String>> tmpProjectInfoMap = projectInfoMap.get(projectName);
-                    List<String> employeeList = null;
+                    List<String> employeeList = new ArrayList<>();
                     if (tmpProjectInfoMap == null) {
                         tmpProjectInfoMap = new HashMap<>();
+                        employeeList.add(report.getUserName());
                     } else {
                         employeeList = tmpProjectInfoMap.get(role);
-                        if (employeeList == null) {
-                            employeeList = new ArrayList<>();
-                        }
                         if (!employeeList.contains(report.getUserName()))
                             employeeList.add(report.getUserName());
                     }

@@ -49,6 +49,9 @@
         mounted: function () {
             var that = this;
             var type=getCookie("type");
+            var userId=getCookie("userId");
+            if(userId==="")
+                self.location='login.html';
             if(type==="admin"){
                 this.weekReportType="班组周报";
                 this.$nextTick(function () {
@@ -65,7 +68,7 @@
             }else{
                 this.weekReportType="个人周报";
                 this.$nextTick(function () {
-                    axios.get('/week_report?userId='+getCookie("userId"), {
+                    axios.get('/week_report?userId='+userId, {
                     }).then(function (response) {
                         that.reports = response.data;
                         console.log(response);

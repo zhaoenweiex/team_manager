@@ -24,6 +24,7 @@
     <li><button class="btn btn-default" type="button" v-on:click="post">提交周报</button></li>
     <li><button class="btn btn-default" type="button" v-on:click="manage">周报管理</button></li>
 </div>
+<script src="./CommonUtil.js"></script>
 <script>
     var VM = new Vue({
         el: '#app',
@@ -31,6 +32,9 @@
             userName: "赵恩伟"
         },
         mounted: function () {
+            var userId=getCookie("userId");
+            if(userId==="")
+                self.location='login.html';
 
         },
         methods: {
