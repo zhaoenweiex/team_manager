@@ -1,23 +1,24 @@
 package com.zw.se2.self.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zw.se2.self.mapper.WeekReportMapper;
 import com.zw.se2.self.model.WeekReport;
 import com.zw.se2.self.service.WeekReportService;
+import com.zw.se2.self.utils.MSWordManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by zhaoenwei on 2017/7/27.
@@ -27,8 +28,11 @@ public class WeekReportServiceImpl implements WeekReportService {
     private static final Logger logger = LoggerFactory.getLogger(WeekReportServiceImpl.class);
     @Value("${reportPath}")
     private String reportsPath;
+    @Value("${templatePath}")
+    private String templatePath;
     @Autowired
     private WeekReportMapper weekReportMapper;
+
 
     @PostConstruct
     public void ini() {
@@ -58,12 +62,25 @@ public class WeekReportServiceImpl implements WeekReportService {
     }
 
     @Override
-    public String generateReport(List<WeekReport> reports) {
+    public String generateReport(List<WeekReport> reports, Map<String, String> basicInfo) {
         //生成报告
-        String filePath = reportsPath +"/"+ System.currentTimeMillis() + ".doc";
+        String filePath = reportsPath + "/" + System.currentTimeMillis() + ".doc";
         Map<String, List<String>> attenceInfoMap = new HashMap<>();//人员名称-请假，出差，加班
         Map<String, Map<String, List<String>>> projectInfoMap = new HashMap<>();//项目名称-角色-人员
         Map<String, List<String>> workInfoMap = new HashMap<>();//人员名称-工作完成情况(包含上一周计划的对比)，计划情况
+        generateReportInfo(reports, attenceInfoMap, projectInfoMap, workInfoMap);
+        //请假人数
+        basicInfo.put("vacationNum", "1");
+
+        //出差人数
+        basicInfo.put("bussinessNum", "1");
+
+
+        writeInfo2Report(filePath, attenceInfoMap, projectInfoMap, workInfoMap, basicInfo);
+        return filePath;
+    }
+
+    private void generateReportInfo(List<WeekReport> reports, Map<String, List<String>> attenceInfoMap, Map<String, Map<String, List<String>>> projectInfoMap, Map<String, List<String>> workInfoMap) {
         for (WeekReport report : reports) {
             List<String> employeeAttenceInfo = new ArrayList<>();
             employeeAttenceInfo.add(report.getOffWorkInfo());
@@ -75,7 +92,7 @@ public class WeekReportServiceImpl implements WeekReportService {
                 String[] projectInfos = report.getProjectInfo().split(";");
                 for (String projectInfoStr : projectInfos) {
                     String[] projectInfo = projectInfoStr.split(",");
-                    if(projectInfo.length<3)
+                    if (projectInfo.length < 3)
                         continue;
                     String projectName = projectInfo[0];
                     String role = projectInfo[1];
@@ -100,18 +117,107 @@ public class WeekReportServiceImpl implements WeekReportService {
             employeeWorkInfo.add(report.getDoneInfo());
             employeeWorkInfo.add(report.getPlanInfo());
             workInfoMap.put(userName, employeeWorkInfo);
+            //出勤信息
             JSONObject jsonAttence = new JSONObject();
             jsonAttence.putAll(attenceInfoMap);
             logger.info(jsonAttence.toString());
+            //项目信息
             JSONObject jsonProject = new JSONObject();
             jsonProject.putAll(projectInfoMap);
             logger.info(jsonProject.toString());
+            //工作信息
             JSONObject jsonWork = new JSONObject();
             jsonWork.putAll(workInfoMap);
             logger.info(jsonWork.toJSONString());
 
         }
-        return filePath;
+    }
+    //TODO:有待进一步完善
+
+    private void writeInfo2Report(String filePath, Map<String, List<String>> attenceInfoMap, Map<String, Map<String, List<String>>> projectInfoMap, Map<String, List<String>> workInfoMap, Map<String, String> basicInfo) {
+        MSWordManager msWordManager = new MSWordManager(true);
+        int pos = templatePath.lastIndexOf("//");
+        Long now = System.currentTimeMillis();
+        String templateCopyPath = templatePath.substring(0, pos - 1) + now + templatePath.substring(pos, templatePath.length());
+        File orgTemplateFile = new File(templatePath);
+        File copyTemplateFile = new File(templateCopyPath);
+        try {
+            FileCopyUtils.copy(orgTemplateFile, copyTemplateFile);
+        } catch (IOException e) {
+            logger.error("模板文件复制失败", e);
+        }
+        try {
+            //读取模板数据
+            msWordManager.openDocument(templateCopyPath);
+
+            //总体内容替换
+            basicInfo.forEach((key, value) -> {
+                msWordManager.replaceAllText(markReplaceStr(key), value);
+            });
+
+            //出勤信息
+            createAttenceTable(attenceInfoMap, msWordManager);
+            //项目信息
+            createProjectTable(projectInfoMap, msWordManager);
+            //工作信息
+            createWorkTable(workInfoMap, msWordManager);
+            //保存数据
+            msWordManager.save(filePath);
+        } catch (Exception e) {
+            logger.error("报告生成失败", e);
+        } finally {
+            msWordManager.close();
+            msWordManager.closeDocument();
+            if (copyTemplateFile.exists())
+                copyTemplateFile.deleteOnExit();
+        }
+
+    }
+
+    private void createWorkTable(Map<String, List<String>> workInfoMap, MSWordManager msWordManager) {
+
+    }
+
+    private void createProjectTable(Map<String, Map<String, List<String>>> projectInfoMap, MSWordManager msWordManager) {
+
+    }
+
+    private void createAttenceTable(Map<String, List<String>> attenceInfoMap, MSWordManager msWordManager) {
+
+    }
+
+    private void createTable(JSONObject resultJson, MSWordManager msWordManager) {
+        msWordManager.replaceAllText("${table}$", "");
+        msWordManager.moveDown(1);
+        JSONArray tableDataArray = resultJson.getJSONArray("tableData");
+        for (int iTable = 0; iTable < tableDataArray.size(); iTable++) {
+            int tableIndex = iTable + 1;
+            JSONObject singleTableData = tableDataArray.getJSONObject(iTable);
+            JSONArray headerArray = singleTableData.getJSONArray("header");
+            String[] array = new String[headerArray.size()];
+            headerArray.toArray(array);
+            List<String> headerList = Arrays.asList(array);
+            List<List> tableData = new ArrayList<>();
+            tableData.add(headerList);
+            JSONArray rowsArray = singleTableData.getJSONArray("rowsData");
+            for (int i = 0; i < rowsArray.size(); i++) {
+                JSONArray rowData = rowsArray.getJSONArray(i);
+                String[] tableRowArray = new String[rowData.size()];
+                rowData.toArray(tableRowArray);
+                tableData.add(Arrays.asList(tableRowArray));
+            }
+            //增加表格标题
+            msWordManager.insertText("表格" + tableIndex + " " + singleTableData.getString("title"));
+            msWordManager.moveDown(1);
+            msWordManager.createTable(headerList.size(), 1);
+            msWordManager.putTxtToRows(tableIndex, 1, 1, tableData);
+            msWordManager.moveEnd();
+        }
+
+    }
+
+    private String markReplaceStr(String s) {
+        return "${" + s + "}$";
     }
 
     @Override

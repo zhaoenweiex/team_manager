@@ -1,6 +1,7 @@
 package com.zw.se2.self.ctrl;
 
 import com.zw.se2.self.model.WeekReport;
+import com.zw.se2.self.service.OrgService;
 import com.zw.se2.self.service.WeekReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhaoenwei on 2017/7/26.
@@ -23,6 +25,8 @@ public class WeekReportCtrl {
     @Autowired
     private WeekReportService service;
     private static final Logger logger = LoggerFactory.getLogger(WeekReportCtrl.class);
+    @Autowired
+    private OrgService orgService;
 
     //提交周报
     @PostMapping
@@ -43,19 +47,23 @@ public class WeekReportCtrl {
 
     //导出
     @GetMapping("export/word")
-    public void exportWord(String[] ids, HttpServletResponse response) {
+    public void exportWord(String[] ids, String orgId,HttpServletResponse response) {
         ids= new String[]{"5", "6", "8"};
+        Map<String, String> basicInfo=orgService.generateBasicInfo(orgId);
+        //组织机构名称
+        //组织人员数量
+
         //生成查询的结果
         List<WeekReport> reports = service.findReportsByIds(ids);
         //生成汇总报告
-        String reportPath = service.generateReport(reports);
+        String reportPath = service.generateReport(reports,basicInfo);
         File targetFile = new File(reportPath);
         //文件流导出
         FileInputStream inputStream = null;
         try {
             //将压缩文件流写入到http的返回数据流
             response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", "attachment;fileName=" + "tmp.pdf");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + "tmp.docx");
             ServletOutputStream outputHttpStream = response.getOutputStream();
             inputStream = new FileInputStream(targetFile);
             int lenZipFile;
@@ -66,7 +74,7 @@ public class WeekReportCtrl {
             outputHttpStream.flush();
 
         } catch (IOException e) {
-            logger.error("文件压缩失败", e);
+            logger.error("文件写入失败", e);
         } finally {
             try {
                 inputStream.close();
