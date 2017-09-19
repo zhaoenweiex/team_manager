@@ -26,4 +26,9 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);
         return user;
     }
+
+    @Override
+    public int countByOrgId(String orgId) {
+        return userMapper.countByOrgId(Long.parseLong(orgId));
+    }
 }

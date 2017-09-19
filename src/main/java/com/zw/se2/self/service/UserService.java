@@ -9,4 +9,6 @@ public interface UserService {
     User findByNameAndPsw(String userName, String password);
 
     User add(User user);
+
+    int countByOrgId(String orgId);
 }

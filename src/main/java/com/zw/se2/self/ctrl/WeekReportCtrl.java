@@ -2,6 +2,7 @@ package com.zw.se2.self.ctrl;
 
 import com.zw.se2.self.model.WeekReport;
 import com.zw.se2.self.service.OrgService;
+import com.zw.se2.self.service.UserService;
 import com.zw.se2.self.service.WeekReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +23,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/week_report")
 public class WeekReportCtrl {
-    @Autowired
-    private WeekReportService service;
     private static final Logger logger = LoggerFactory.getLogger(WeekReportCtrl.class);
     @Autowired
-    private OrgService orgService;
+    private WeekReportService service;
 
+    @Autowired
+    private OrgService orgService;
+    @Autowired
+    private UserService userService;
     //提交周报
     @PostMapping
     public String createReport(@RequestBody WeekReport weekReport) {
@@ -52,7 +55,8 @@ public class WeekReportCtrl {
         Map<String, String> basicInfo=orgService.generateBasicInfo(orgId);
         //组织机构名称
         //组织人员数量
-
+        int numMember=userService.countByOrgId(orgId);
+        basicInfo.put("orgMemberNum", String.valueOf(numMember));
         //生成查询的结果
         List<WeekReport> reports = service.findReportsByIds(ids);
         //生成汇总报告

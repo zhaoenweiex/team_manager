@@ -20,4 +20,6 @@ public interface UserMapper {
     User findByNameAndPsw(@Param("userName")String userName, @Param("password") String password);
     @Insert("insert into user() values()")
     void insert(User user);
+    @Select("count user where orgId = #{orgId}")
+    int countByOrgId(@Param("orgId")long orgId);
 }
