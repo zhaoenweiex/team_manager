@@ -65,19 +65,52 @@ public class WeekReportServiceImpl implements WeekReportService {
     public String generateReport(List<WeekReport> reports, Map<String, String> basicInfo) {
         //生成报告
         String filePath = reportsPath + "/" + System.currentTimeMillis() + ".doc";
-        Map<String, List<String>> attenceInfoMap = new HashMap<>();//人员名称-请假，出差，加班
+        Map<String, List<String>> attenceInfoMap = generateAttenceInfo(reports);//人员名称-请假，出差，加班
         Map<String, Map<String, List<String>>> projectInfoMap = new HashMap<>();//项目名称-角色-人员
         Map<String, List<String>> workInfoMap = new HashMap<>();//人员名称-工作完成情况(包含上一周计划的对比)，计划情况
         generateReportInfo(reports, attenceInfoMap, projectInfoMap, workInfoMap);
         //请假人数
-        basicInfo.put("vacationNum", "1");
+        attenceInfoMap.forEach((name, infoList) -> {
+            if (infoList != null && infoList.size() > 0 && !(infoList.get(0).equalsIgnoreCase("无"))) {
+                int vacationMum = 0;
+                if (basicInfo.containsKey("vacationNum"))
+
+                    vacationMum = Integer.parseInt(basicInfo.get("vacationNum"));
+                basicInfo.put("vacationNum", String.valueOf(vacationMum + 1));
+            }
+        });
+
 
         //出差人数
-        basicInfo.put("bussinessNum", "1");
+        attenceInfoMap.forEach((name, infoList) -> {
+            if (infoList != null && infoList.size() > 1 && !(infoList.get(1).equalsIgnoreCase("无"))) {
+                int bussinessNum = 0;
+                if (basicInfo.containsKey("bussinessNum"))
 
-
+                    bussinessNum = Integer.parseInt(basicInfo.get("bussinessNum"));
+                basicInfo.put("bussinessNum", String.valueOf(bussinessNum + 1));
+            }
+        });
         writeInfo2Report(filePath, attenceInfoMap, projectInfoMap, workInfoMap, basicInfo);
         return filePath;
+    }
+
+    private Map<String, List<String>> generateAttenceInfo(List<WeekReport> reports) {
+        Map<String, List<String>> attenceInfoMap = new HashMap<>();//人员名称-请假，出差，加班
+        for (WeekReport report : reports) {
+            List<String> employeeAttenceInfo = new ArrayList<>();
+            employeeAttenceInfo.add(report.getOffWorkInfo());
+            employeeAttenceInfo.add(report.getBusinessOutInfo());
+            employeeAttenceInfo.add(report.getOvertimeInfo());
+            String userName = StringUtils.isEmpty(report.getUserName()) ? String.valueOf(report.getUserId()) : report.getUserName();
+            attenceInfoMap.put(userName, employeeAttenceInfo);
+            //出勤信息
+            JSONObject jsonAttence = new JSONObject();
+            jsonAttence.putAll(attenceInfoMap);
+            logger.info(jsonAttence.toString());
+
+        }
+        return attenceInfoMap;
     }
 
     private void generateReportInfo(List<WeekReport> reports, Map<String, List<String>> attenceInfoMap, Map<String, Map<String, List<String>>> projectInfoMap, Map<String, List<String>> workInfoMap) {
