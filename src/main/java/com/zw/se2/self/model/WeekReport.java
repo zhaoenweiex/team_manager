@@ -1,5 +1,7 @@
 package com.zw.se2.self.model;
 
+import java.util.List;
+
 /**
  * Created by zhaoenwei on 2017/7/26.
  */
@@ -16,6 +18,24 @@ public class WeekReport {
     private Integer userId;
     private String userName;//用户名称
     private Integer orgId;
+    private List<WorkItem> planWorkItem;//计划的工作条目
+    private List<WorkItem> doneWorkItem;//完成的工作条目
+
+    public List<WorkItem> getPlanWorkItem() {
+        return planWorkItem;
+    }
+
+    public void setPlanWorkItem(List<WorkItem> planWorkItem) {
+        this.planWorkItem = planWorkItem;
+    }
+
+    public List<WorkItem> getDoneWorkItem() {
+        return doneWorkItem;
+    }
+
+    public void setDoneWorkItem(List<WorkItem> doneWorkItem) {
+        this.doneWorkItem = doneWorkItem;
+    }
 
     public String getUserName() {
         return userName;

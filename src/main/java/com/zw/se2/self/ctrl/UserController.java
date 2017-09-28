@@ -3,6 +3,7 @@ package com.zw.se2.self.ctrl;
 import com.zw.se2.self.model.User;
 import com.zw.se2.self.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,4 +29,5 @@ public class UserController {
     public  User create(User user){
         return userService.add(user);
     }
+
 }
