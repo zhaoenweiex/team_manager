@@ -17,6 +17,18 @@ public class WorkItem {
     private boolean planFlag;//是否计划中
     private String remark;//备注不是success的状态必填
 
+    @Override
+    public String toString() {
+        return "WorkItem{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", userId=" + userId +
+                ", content='" + content + '\'' +
+                ", status='" + status + '\'' +
+                ", planFlag=" + planFlag +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 
     public Integer getId() {
         return id;

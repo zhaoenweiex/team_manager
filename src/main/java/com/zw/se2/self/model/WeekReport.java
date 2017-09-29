@@ -52,6 +52,7 @@ public class WeekReport {
     public void setOrgId(Integer orgId) {
         this.orgId = orgId;
     }
+
     @Override
     public String toString() {
         return "WeekReport{" +
@@ -65,6 +66,10 @@ public class WeekReport {
                 ", overtimeInfo='" + overtimeInfo + '\'' +
                 ", businessOutInfo='" + businessOutInfo + '\'' +
                 ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", orgId=" + orgId +
+                ", planWorkItem=" + planWorkItem +
+                ", doneWorkItem=" + doneWorkItem +
                 '}';
     }
 
