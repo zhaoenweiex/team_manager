@@ -6,7 +6,7 @@ package com.zw.se2.self.model;
 public class WorkItem {
     private Integer id;//主键
     private Long createTime;//创建时间
-    private Integer userId;//所属用户id
+    private User user;//所属用户
     private String content;//工作内容
     //工作项状态(不是success的状态必填remark)
     // success，成功
@@ -16,13 +16,22 @@ public class WorkItem {
     private String status;
     private boolean planFlag;//是否计划中
     private String remark;//备注不是success的状态必填
+    //所属项目
+    private Project belongProject;
+
+    public Project getBelongProject() {
+        return belongProject;
+    }
+
+    public void setBelongProject(Project belongProject) {
+        this.belongProject = belongProject;
+    }
 
     @Override
     public String toString() {
         return "WorkItem{" +
                 "id=" + id +
                 ", createTime=" + createTime +
-                ", userId=" + userId +
                 ", content='" + content + '\'' +
                 ", status='" + status + '\'' +
                 ", planFlag=" + planFlag +
@@ -46,12 +55,12 @@ public class WorkItem {
         this.createTime = createTime;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
