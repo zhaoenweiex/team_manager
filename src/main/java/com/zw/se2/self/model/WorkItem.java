@@ -4,7 +4,7 @@ package com.zw.se2.self.model;
  * 工作项数据结构
  */
 public class WorkItem {
-    private Integer id;//主键
+    private int id;//主键
     private Long createTime;//创建时间
     private User user;//所属用户
     private String content;//工作内容

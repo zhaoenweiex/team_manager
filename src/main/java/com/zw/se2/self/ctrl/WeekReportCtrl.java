@@ -31,6 +31,7 @@ public class WeekReportCtrl {
     private OrgService orgService;
     @Autowired
     private UserService userService;
+
     //提交周报
     @PostMapping
     public String createReport(@RequestBody WeekReport weekReport) {
@@ -42,25 +43,26 @@ public class WeekReportCtrl {
     //查询
     @GetMapping
     public List<WeekReport> getReport(WeekReport weekReport) {
-        if (weekReport.getOrgId() != null)
+        if (weekReport.getOrgId() != null) {
             return service.searchByOrgId(weekReport);
-        else
+        } else {
             return service.searchByUserId(weekReport);
+        }
     }
 
     //导出
     @GetMapping("export/word")
-    public void exportWord(String[] ids, String orgId,HttpServletResponse response) {
-        ids= new String[]{"5", "6", "8"};
-        Map<String, String> basicInfo=orgService.generateBasicInfo(orgId);
+    public void exportWord(String[] ids, String orgId, HttpServletResponse response) {
+        ids = new String[]{"5", "6", "8"};
+        Map<String, String> basicInfo = orgService.generateBasicInfo(orgId);
         //组织机构名称
         //组织人员数量
-        int numMember=userService.countByOrgId(orgId);
+        int numMember = userService.countByOrgId(orgId);
         basicInfo.put("orgMemberNum", String.valueOf(numMember));
         //生成查询的结果
         List<WeekReport> reports = service.findReportsByIds(ids);
         //生成汇总报告
-        String reportPath = service.generateReport(reports,basicInfo);
+        String reportPath = service.generateReport(reports, basicInfo);
         File targetFile = new File(reportPath);
         //文件流导出
         FileInputStream inputStream = null;

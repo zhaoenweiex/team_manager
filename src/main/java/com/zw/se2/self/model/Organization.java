@@ -4,15 +4,15 @@ package com.zw.se2.self.model;
  * Created by zhaoenwei on 2017/7/26.
  */
 public class Organization {
-    private Long id;
+    private int id;
     private String name;
     private Organization parentOrg;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
