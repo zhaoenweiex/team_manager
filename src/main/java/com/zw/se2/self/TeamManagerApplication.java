@@ -1,13 +1,11 @@
 package com.zw.se2.self;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
-@MapperScan("com.zw.se2.self.mappper")
-
+@MapperScan(basePackages = "com.zw.se2.self.mapper")
 public class TeamManagerApplication {
 
 	public static void main(String[] args) {

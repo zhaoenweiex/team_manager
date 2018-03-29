@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
-
     @PostMapping("/login")
     public User login(@RequestBody User user){
         String userName=user.getName();

@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Created by zhaoenwei on 2017/7/27.
  */
-@Mapper
 public interface WeekReportMapper {
     @Select( "select done_info,plan_info,problem_info from week_report where 1=1")
     @Results(value = {
