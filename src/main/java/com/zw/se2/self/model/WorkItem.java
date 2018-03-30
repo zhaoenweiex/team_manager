@@ -3,8 +3,7 @@ package com.zw.se2.self.model;
 /**
  * 工作项数据结构
  */
-public class WorkItem {
-    private int id;//主键
+public class WorkItem extends BaseEntity{
     private Long createTime;//创建时间
     private User user;//所属用户
     private String content;//工作内容
@@ -30,21 +29,12 @@ public class WorkItem {
     @Override
     public String toString() {
         return "WorkItem{" +
-                "id=" + id +
                 ", createTime=" + createTime +
                 ", content='" + content + '\'' +
                 ", status='" + status + '\'' +
                 ", planFlag=" + planFlag +
                 ", remark='" + remark + '\'' +
                 '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Long getCreateTime() {

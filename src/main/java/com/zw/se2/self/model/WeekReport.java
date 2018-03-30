@@ -5,8 +5,7 @@ import java.util.List;
 /**
  * Created by zhaoenwei on 2017/7/26.
  */
-public class WeekReport {
-    private Integer id;
+public class WeekReport extends BaseEntity{
     private Long createTime;
     private String doneInfo;
     private String planInfo;
@@ -17,7 +16,7 @@ public class WeekReport {
     private String businessOutInfo;//出差信息
     private Integer userId;
     private String userName;//用户名称
-    private Integer orgId;
+    private Organization organization;
     private List<WorkItem> planWorkItem;//计划的工作条目
     private List<WorkItem> doneWorkItem;//完成的工作条目
 
@@ -45,18 +44,11 @@ public class WeekReport {
         this.userName = userName;
     }
 
-    public Integer getOrgId() {
-        return orgId;
-    }
 
-    public void setOrgId(Integer orgId) {
-        this.orgId = orgId;
-    }
 
     @Override
     public String toString() {
         return "WeekReport{" +
-                "id=" + id +
                 ", createTime=" + createTime +
                 ", doneInfo='" + doneInfo + '\'' +
                 ", planInfo='" + planInfo + '\'' +
@@ -67,7 +59,6 @@ public class WeekReport {
                 ", businessOutInfo='" + businessOutInfo + '\'' +
                 ", userId=" + userId +
                 ", userName='" + userName + '\'' +
-                ", orgId=" + orgId +
                 ", planWorkItem=" + planWorkItem +
                 ", doneWorkItem=" + doneWorkItem +
                 '}';
@@ -79,14 +70,6 @@ public class WeekReport {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Long getCreateTime() {
@@ -152,5 +135,13 @@ public class WeekReport {
 
     public void setBusinessOutInfo(String businessOutInfo) {
         this.businessOutInfo = businessOutInfo;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 }

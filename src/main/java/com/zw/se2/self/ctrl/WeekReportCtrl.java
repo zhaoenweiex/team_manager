@@ -43,7 +43,7 @@ public class WeekReportCtrl {
     //查询
     @GetMapping
     public List<WeekReport> getReport(WeekReport weekReport) {
-        if (weekReport.getOrgId() != null) {
+        if (weekReport.getOrganization() != null) {
             return service.searchByOrgId(weekReport);
         } else {
             return service.searchByUserId(weekReport);

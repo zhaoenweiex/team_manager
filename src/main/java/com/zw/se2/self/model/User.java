@@ -3,8 +3,7 @@ package com.zw.se2.self.model;
 /**
  * Created by zhaoenwei on 2017/7/26.
  */
-public class User {
-    private Long id;
+public class User extends BaseEntity{
     private String name;//用户名
     private String password;//密码
     private String type;//人员类型
@@ -41,14 +40,6 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -17,7 +17,7 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Map<String, String> generateBasicInfo(String orgId) {
-        Organization organization = organizationMapper.findById(Long.parseLong(orgId));
+        Organization organization = organizationMapper.selectByPrimaryKey(Long.parseLong(orgId));
         Map result = new HashMap();
         if (!StringUtils.isEmpty(organization.getName()))
             result.put("orgName", organization.getName());

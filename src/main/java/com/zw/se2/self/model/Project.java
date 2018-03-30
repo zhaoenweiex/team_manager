@@ -3,18 +3,12 @@ package com.zw.se2.self.model;
 import java.util.List;
 
 //项目
-public class Project {
-    private Long id;
+public class Project extends BaseEntity{
     private String name;
+    private String description;
     private List<User> members;
+    private List<ProjectTarget> targets;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -35,9 +29,16 @@ public class Project {
     @Override
     public String toString() {
         return "Project{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", members=" + members +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
