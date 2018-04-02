@@ -7,8 +7,35 @@ public class User extends BaseEntity{
     private String name;//用户名
     private String password;//密码
     private String type;//人员类型
-    private Long orgId;//组织机构id
+    private Organization organization;//组织机构id
     private String trueName;//真实姓名
+    private boolean enabled;//真实姓名
+    private String email;//邮件
+    private String phone;//电话号码
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getPassword() {
         return password;
@@ -18,12 +45,13 @@ public class User extends BaseEntity{
         this.password = password;
     }
 
-    public Long getOrgId() {
-        return orgId;
+
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrgId(Long orgId) {
-        this.orgId = orgId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public String getTrueName() {
