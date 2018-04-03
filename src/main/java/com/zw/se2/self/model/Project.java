@@ -9,6 +9,13 @@ public class Project extends BaseEntity{
     private List<User> members;
     private List<ProjectTarget> targets;
 
+    public List<ProjectTarget> getTargets() {
+        return targets;
+    }
+
+    public void setTargets(List<ProjectTarget> targets) {
+        this.targets = targets;
+    }
 
     public String getName() {
         return name;
