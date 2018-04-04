@@ -20,30 +20,34 @@
                         password="${spring.datasource.password}">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.zw.se2.self.model" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.zw.se2.self.mode1l" targetProject="src/main/java"/>
 
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
 
         <javaClientGenerator targetPackage="com.zw.se2.self.mapper" targetProject="src/main/java"
                              type="XMLMAPPER"/>
 
-        <table tableName="user">
+        <table tableName="user" domainObjectName="User">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        <table tableName="weekReport">
+        <table tableName="week_report" domainObjectName="WeekReport">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        <table tableName="organization">
+        <table tableName="organization" domainObjectName="Organization">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        <table tableName="workItem">
+        <table tableName="work_item" domainObjectName="workItem">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
-        <table tableName="project">
+        <table tableName="project" domainObjectName="Project">
+            <!--mysql 配置-->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+        <table tableName="project_target" domainObjectName="ProjectTarget">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>

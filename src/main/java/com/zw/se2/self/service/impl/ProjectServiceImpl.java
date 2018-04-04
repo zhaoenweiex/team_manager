@@ -1,6 +1,5 @@
 package com.zw.se2.self.service.impl;
 
-import com.github.pagehelper.PageInfo;
 import com.zw.se2.self.mapper.ProjectMapper;
 import com.zw.se2.self.model.Project;
 import com.zw.se2.self.service.ProjectService;
@@ -14,8 +13,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
     @Override
-    public PageInfo<Project> findALl() {
-        List<Project> projectList=projectMapper.selectAll();
-        return new PageInfo<>(projectList);
+    public List<Project> findALl() {
+        return projectMapper.selectAll();
     }
 }

@@ -1,8 +1,9 @@
 package com.zw.se2.self.service;
 
-import com.github.pagehelper.PageInfo;
 import com.zw.se2.self.model.Project;
 
+import java.util.List;
+
 public interface ProjectService {
-    PageInfo<Project> findALl();
+    List<Project> findALl();
 }

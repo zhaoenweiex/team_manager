@@ -1,7 +1,6 @@
 package com.zw.se2.self.ctrl;
 
 import com.github.pagehelper.PageInfo;
-import com.zw.se2.self.model.Project;
 import com.zw.se2.self.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ public class ProjectController {
     }
 
     @GetMapping("/all")
-    public PageInfo<Project> findAll(){
-        return service.findALl();
+    public PageInfo findAll(){
+        return new PageInfo<>(service.findALl());
     }
 }
