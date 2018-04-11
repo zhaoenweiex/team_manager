@@ -14,6 +14,6 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
     @Override
     public List<Project> findALl() {
-        return projectMapper.selectAll();
+        return projectMapper.findAll();
     }
 }
