@@ -26,35 +26,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zw.se2.self.mapper.ProjectMapper">
     <resultMap type="com.zw.se2.self.model.Project" id="projectMap">
-        <id property="id" column="id" />
+        <id property="id" column="pid" />
         <result property="name" column="name" />
         <result property="description" column="description" />
-
-        <collection  property="members"  ofType="com.zw.se2.self.model.User">
-            <id property="id" column="id" />
-            <result property="trueName" column="trueName" />
-            <result property="email" column="email" />
-            <result property="phone" column="phone" />
-        </collection>
-        <collection  property="targets"  ofType="com.zw.se2.self.model.ProjectTarget">
-            <id property="id" column="id" />
-            <result property="content" column="content" />
-            <result property="time" column="time" />
-        </collection>
+        <collection  property="members"  resultMap="userResult"/>
+        <collection  property="targets"  resultMap="projectTargetResult"/>
     </resultMap>
-
+    <resultMap type="com.zw.se2.self.model.ProjectTarget" id="projectTargetResult">
+        <id property="id" column="ptid" />
+        <result property="content" column="content" />
+        <result property="time" column="time" />
+    </resultMap>
+    <resultMap type="com.zw.se2.self.model.User" id="userResult">
+        <id property="id" column="uid" />
+        <result property="trueName" column="trueName" />
+        <result property="email" column="email" />
+        <result property="phone" column="phone" />
+    </resultMap>
     <select id="findAll" resultMap="projectMap">
         select
             *
         from
-            project p
-            inner join
-            project_project_target pt
-                on
-                    p.id=pt.projectid
-            inner join
-            project_target t
-                on
-                    pt.targetid=t.id
+            project p,
+            project_target pt,
+            project_project_target ppt,
+            project_user pu,
+            user u
+        WHERE p.pid=ppt.projectid and ppt.targetid=pt.ptid
     </select>
 </mapper>
