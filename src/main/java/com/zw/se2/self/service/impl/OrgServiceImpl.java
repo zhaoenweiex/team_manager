@@ -24,4 +24,14 @@ public class OrgServiceImpl implements OrgService {
         result.put("orgId", organization.getId());
         return result;
     }
+
+    @Override
+    public boolean add(Organization organization) {
+        return organizationMapper.insert(organization) > 0;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+       return organizationMapper.deleteByPrimaryKey(id)>0;
+    }
 }
