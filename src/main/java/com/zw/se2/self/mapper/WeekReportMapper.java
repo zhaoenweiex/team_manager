@@ -36,13 +36,6 @@ public interface WeekReportMapper  extends MyMapper<WeekReport> {
             @Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
     List<WeekReport> findByOrgId(WeekReport weekReport);
-    @Select( "select done_info,plan_info,problem_info from week_report where 1=1 and user_id=#{userId}")
-    @Results(value = {
-            @Result(id = true, property = "id", column = "id", javaType = Integer.class, jdbcType = JdbcType.BIGINT),
-            @Result(property = "doneInfo", column = "done_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-            @Result(property = "planInfo", column = "plan_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-            @Result(property = "problemInfo", column = "problem_info", javaType = String.class, jdbcType = JdbcType.VARCHAR),
-            @Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR)
-    })
-    List<WeekReport> findByUserId(WeekReport weekReport);
+    @Select( "select * from week_report where 1=1 and user_id=#{userId} sort by create_time desc")
+    List<WeekReport> findByUserId(String userId);
 }

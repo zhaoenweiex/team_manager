@@ -255,7 +255,17 @@ public class WeekReportServiceImpl implements WeekReportService {
     }
 
     @Override
-    public List<WeekReport> searchByUserId(WeekReport weekReport) {
-        return weekReportMapper.findByUserId(weekReport);
+    public List<WeekReport> searchByUserId(String userId) {
+        return weekReportMapper.findByUserId(userId);
+    }
+
+    @Override
+    public WeekReport getLastReportByUserId(String userId){
+       List<WeekReport> reportList= weekReportMapper.findByUserId(userId);
+       if (reportList!=null&&reportList.size()>0)
+       {
+           return reportList.get(0);
+       }else
+           return null;
     }
 }

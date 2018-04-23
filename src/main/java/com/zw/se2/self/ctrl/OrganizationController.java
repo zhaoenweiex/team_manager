@@ -13,8 +13,13 @@ import org.springframework.web.client.HttpServerErrorException;
 @RestController
 @RequestMapping("org")
 public class OrganizationController {
+    private final OrgService orgService;
+
     @Autowired
-    private OrgService orgService;
+    public OrganizationController(OrgService orgService) {
+        this.orgService = orgService;
+    }
+
     @PostMapping
     public Organization create(Organization organization){
         if(orgService.add(organization))

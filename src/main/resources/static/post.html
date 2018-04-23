@@ -41,6 +41,7 @@
             <li>多个项目用英文分号隔开</li>
             <input class="form-control" v-model="projectInfo" placeholder="">
         </div>
+        <!--这个地方需要完成情况需要与上周计划关联，计划要与项目关联-->
         <div>
             <h2><span class="glyphicon glyphicon-star" aria-hidden="true"></span>任务信息</h2>
             <li>本周工作完成情况</li>
@@ -64,6 +65,7 @@
             offWorkInfo: '',
             overtimeInfo: '',
             businessOutInfo: '',
+            //TODO:完成事项要跟上周的计划自动匹配，因此这个地方也应该是一个列表才对
             doneInfo: '',
             planInfo: '',
             problemInfo: '',

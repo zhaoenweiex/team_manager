@@ -39,7 +39,11 @@ public class WeekReportCtrl {
         service.create(weekReport);
         return "success";
     }
-
+    //获取上周周波啊
+    @GetMapping("/last")
+    public WeekReport getLastReport(String userId) {
+        return service.getLastReportByUserId(userId);
+    }
     //查询
     @GetMapping
     public List<WeekReport> getReport(WeekReport weekReport) {

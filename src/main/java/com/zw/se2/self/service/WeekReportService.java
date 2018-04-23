@@ -17,5 +17,8 @@ public interface WeekReportService {
 
     String generateReport(List<WeekReport> reports,Map<String,String> basicInfo);
 
-    List<WeekReport> searchByUserId(WeekReport weekReport);
+
+    List<WeekReport> searchByUserId(String userId);
+
+    WeekReport getLastReportByUserId(String userId);
 }
