@@ -7,8 +7,6 @@ import java.util.List;
  */
 public class WeekReport extends BaseEntity{
     private Long createTime;
-    private String doneInfo;
-    private String planInfo;
     private String problemInfo;
     private String projectInfo;
     private String offWorkInfo;//请假
@@ -17,23 +15,23 @@ public class WeekReport extends BaseEntity{
     private Integer userId;
     private String userName;//用户名称
     private Organization organization;
-    private List<WorkItem> planWorkItem;//计划的工作条目
-    private List<WorkItem> doneWorkItem;//完成的工作条目
+    private List<WorkItem> planWorkItems;//计划的工作条目
+    private List<WorkItem> doneWorkItems;//完成的工作条目
 
-    public List<WorkItem> getPlanWorkItem() {
-        return planWorkItem;
+    public List<WorkItem> getPlanWorkItems() {
+        return planWorkItems;
     }
 
-    public void setPlanWorkItem(List<WorkItem> planWorkItem) {
-        this.planWorkItem = planWorkItem;
+    public void setPlanWorkItems(List<WorkItem> planWorkItems) {
+        this.planWorkItems = planWorkItems;
     }
 
-    public List<WorkItem> getDoneWorkItem() {
-        return doneWorkItem;
+    public List<WorkItem> getDoneWorkItems() {
+        return doneWorkItems;
     }
 
-    public void setDoneWorkItem(List<WorkItem> doneWorkItem) {
-        this.doneWorkItem = doneWorkItem;
+    public void setDoneWorkItems(List<WorkItem> doneWorkItems) {
+        this.doneWorkItems = doneWorkItems;
     }
 
     public String getUserName() {
@@ -50,8 +48,6 @@ public class WeekReport extends BaseEntity{
     public String toString() {
         return "WeekReport{" +
                 ", createTime=" + createTime +
-                ", doneInfo='" + doneInfo + '\'' +
-                ", planInfo='" + planInfo + '\'' +
                 ", problemInfo='" + problemInfo + '\'' +
                 ", projectInfo='" + projectInfo + '\'' +
                 ", offWorkInfo='" + offWorkInfo + '\'' +
@@ -59,8 +55,8 @@ public class WeekReport extends BaseEntity{
                 ", businessOutInfo='" + businessOutInfo + '\'' +
                 ", userId=" + userId +
                 ", userName='" + userName + '\'' +
-                ", planWorkItem=" + planWorkItem +
-                ", doneWorkItem=" + doneWorkItem +
+                ", planWorkItems=" + planWorkItems +
+                ", doneWorkItems=" + doneWorkItems +
                 '}';
     }
 
@@ -78,22 +74,6 @@ public class WeekReport extends BaseEntity{
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
-    }
-
-    public String getDoneInfo() {
-        return doneInfo;
-    }
-
-    public void setDoneInfo(String doneInfo) {
-        this.doneInfo = doneInfo;
-    }
-
-    public String getPlanInfo() {
-        return planInfo;
-    }
-
-    public void setPlanInfo(String planInfo) {
-        this.planInfo = planInfo;
     }
 
     public String getProblemInfo() {

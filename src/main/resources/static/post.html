@@ -45,9 +45,24 @@
         <div>
             <h2><span class="glyphicon glyphicon-star" aria-hidden="true"></span>任务信息</h2>
             <li>本周工作完成情况</li>
-            <textarea class="form-control" v-model="doneInfo" placeholder="请添加"></textarea>
+            <!--TODO：组件化-->
+            <!--<doneItems></doneItems>-->
+            <button>添加临时工作项</button>
+            <!--TODO:本周完成情况要对应上周做的计划-->
+            <table class="table table-striped" >
+                <tr>
+                    <td>序号</td>
+                    <td class="success">计划工作项</td>
+                </tr>
+                <tr v-for="(workItem,index) in planWorkItems">
+                    <td>{{ index+1 }}</td>
+                    <td class="success">{{ workItem.content }}</td>
+                </tr>
+                <!--TODO:需要支持手动添加-->
+            </table>
+            <!--<textarea class="form-control" v-model="doneInfo" placeholder="请添加"></textarea>-->
             <li>下周工作计划</li>
-            <textarea class="form-control" v-model="planInfo" placeholder="请添加"></textarea>
+            <!--<planItems></planItems>-->
             <li>风险及问题</li>
             <textarea class="form-control" v-model="problemInfo" placeholder="请添加"></textarea>
         </div>
@@ -65,9 +80,8 @@
             offWorkInfo: '',
             overtimeInfo: '',
             businessOutInfo: '',
-            //TODO:完成事项要跟上周的计划自动匹配，因此这个地方也应该是一个列表才对
-            doneInfo: '',
-            planInfo: '',
+            doneWorkItems: [],
+            planWorkItems: [],
             problemInfo: '',
             projectInfo: '',
             reportStatus: '',
@@ -81,7 +95,7 @@
             this.$nextTick(function () {
                 axios.get('/week_report?userId=' + userId, {}).then(function (response) {
                     if (response.data.length > 0)
-                        that.doneInfo = response.data[0].planInfo;
+                        that.doneWorkItems = response.data[0].planWorkItems;
 
                 })
                     .catch(function (error) {
@@ -102,8 +116,8 @@
                     offWorkInfo: this.offWorkInfo,
                     overtimeInfo: this.overtimeInfo,
                     businessOutInfo: this.businessOutInfo,
-                    doneInfo: this.doneInfo,
-                    planInfo: this.planInfo,
+                    doneWorkItems: this.doneWorkItems,
+                    planWorkItems: this.planWorkItems,
                     problemInfo: this.problemInfo,
                     projectInfo: this.projectInfo,
                 })
