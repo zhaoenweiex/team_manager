@@ -1,5 +1,24 @@
 USE `team_manager`;
-
+DROP TABLE IF EXISTS `weekreport`;
+CREATE TABLE `weekreport` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `createtime` datetime(6) NOT NULL COMMENT '创建时间',
+  `problemInfo` varchar(511) CHARACTER SET utf8 DEFAULT NULL COMMENT '问题',
+  `offWorkInfo` varchar(511) CHARACTER SET utf8 DEFAULT NULL COMMENT '请假',
+  `overtimeInfo` varchar(511) CHARACTER SET utf8 DEFAULT NULL COMMENT '加班',
+  `businessOutInfo` varchar(511) DEFAULT FALSE COMMENT '出差信息',
+  `organizationId` bigint(20) DEFAULT NULL COMMENT '所属组织Id',
+  `userid` bigint(20) DEFAULT NULL COMMENT '人员',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周报';
+DROP TABLE IF EXISTS `weekreport_workitem`;
+CREATE TABLE `weekreport_workitem` (
+  `weekreportid` bigint(20),
+  `workitemid` bigint(255),
+  constraint fk_weekreportid foreign key(weekreportid) references weekreport(weekreport),
+  constraint fk_workitemid foreign key(workitemid) references workitem(id),
+  PRIMARY KEY (`projectid`,`userid`)
+} ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周报和工作项关联表';
 DROP TABLE IF EXISTS `workitem`;
 CREATE TABLE `workitem` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',

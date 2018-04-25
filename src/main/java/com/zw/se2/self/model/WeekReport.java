@@ -8,12 +8,10 @@ import java.util.List;
 public class WeekReport extends BaseEntity{
     private Long createTime;
     private String problemInfo;
-    private String projectInfo;
     private String offWorkInfo;//请假
     private String overtimeInfo;//加班
     private String businessOutInfo;//出差信息
-    private Integer userId;
-    private String userName;//用户名称
+    private User user;
     private Organization organization;
     private List<WorkItem> planWorkItems;//计划的工作条目
     private List<WorkItem> doneWorkItems;//完成的工作条目
@@ -34,13 +32,7 @@ public class WeekReport extends BaseEntity{
         this.doneWorkItems = doneWorkItems;
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
 
 
@@ -49,24 +41,14 @@ public class WeekReport extends BaseEntity{
         return "WeekReport{" +
                 ", createTime=" + createTime +
                 ", problemInfo='" + problemInfo + '\'' +
-                ", projectInfo='" + projectInfo + '\'' +
                 ", offWorkInfo='" + offWorkInfo + '\'' +
                 ", overtimeInfo='" + overtimeInfo + '\'' +
                 ", businessOutInfo='" + businessOutInfo + '\'' +
-                ", userId=" + userId +
-                ", userName='" + userName + '\'' +
                 ", planWorkItems=" + planWorkItems +
                 ", doneWorkItems=" + doneWorkItems +
                 '}';
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public Long getCreateTime() {
         return createTime;
@@ -85,13 +67,6 @@ public class WeekReport extends BaseEntity{
     }
 
 
-    public String getProjectInfo() {
-        return projectInfo;
-    }
-
-    public void setProjectInfo(String projectInfo) {
-        this.projectInfo = projectInfo;
-    }
 
     public String getOffWorkInfo() {
         return offWorkInfo;
