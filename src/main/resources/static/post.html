@@ -45,10 +45,35 @@
         <div>
             <h2><span class="glyphicon glyphicon-star" aria-hidden="true"></span>任务信息</h2>
             <li>本周工作完成情况</li>
-            <!--TODO：组件化-->
-            <!--<doneItems></doneItems>-->
             <button>添加临时工作项</button>
             <!--TODO:本周完成情况要对应上周做的计划-->
+            <table class="table table-striped" >
+                <tr>
+                    <td>序号</td>
+                    <td class="success">计划工作项</td>
+                    <td>完成情况</td>
+                </tr>
+                <tr v-for="(workItem,index) in planWorkItems">
+                    <td>{{ index+1 }}</td>
+                    <td class="success">{{ workItem.content }}</td>
+                    <td><div class="check-box"></div> </td>
+                </tr>
+            </table>
+            <li><button  type="submit" class="btn btn-default" v-on:onclick="addTempWorkItem()">新增临时工作项</button></li>
+            <table class="table table-striped" >
+                <tr>
+                    <td>序号</td>
+                    <td class="success">临时工作项</td>
+                </tr>
+                <tr v-for="(workItem,index) in lastPlanWorkItems">
+                    <td>{{ index+1 }}</td>
+                    <td class="success">{{ workItem.content }}</td>
+                    <td><div class="check-box"></div> </td>
+                </tr>
+            </table>
+            <!--<textarea class="form-control" v-model="doneInfo" placeholder="请添加"></textarea>-->
+            <li>下周工作计划</li>
+            <li><button  type="submit" class="btn btn-default" v-on:onclick="addPlanWorkItem()">新增计划工作项</button></li>
             <table class="table table-striped" >
                 <tr>
                     <td>序号</td>
@@ -57,12 +82,9 @@
                 <tr v-for="(workItem,index) in planWorkItems">
                     <td>{{ index+1 }}</td>
                     <td class="success">{{ workItem.content }}</td>
+                    <td><div class="check-box"></div> </td>
                 </tr>
-                <!--TODO:需要支持手动添加-->
             </table>
-            <!--<textarea class="form-control" v-model="doneInfo" placeholder="请添加"></textarea>-->
-            <li>下周工作计划</li>
-            <!--<planItems></planItems>-->
             <li>风险及问题</li>
             <textarea class="form-control" v-model="problemInfo" placeholder="请添加"></textarea>
         </div>
@@ -82,6 +104,7 @@
             businessOutInfo: '',
             doneWorkItems: [],
             planWorkItems: [],
+            lastPlanWorkItems:[],
             problemInfo: '',
             projectInfo: '',
             reportStatus: '',
@@ -95,7 +118,10 @@
             this.$nextTick(function () {
                 axios.get('/week_report?userId=' + userId, {}).then(function (response) {
                     if (response.data.length > 0)
-                        that.doneWorkItems = response.data[0].planWorkItems;
+                    {
+                        that.lastPlanWorkItems=response.data[0].planWorkItems;
+                        that.doneWorkItems = that.lastPlanWorkItems;
+                    }
 
                 })
                     .catch(function (error) {
@@ -106,6 +132,28 @@
 
         },
         methods: {
+            addPlanWorkItem:function(){
+                axios.post('/workItem', {
+                    //todo:补充计划项
+                }) .then(function (response) {
+                    //TODO:向planWorkItems添加本数据
+                    console.log(response);
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            addTempWorkItem:function(){
+                axios.post('/workItem', {
+                    //todo:补充添加工作项
+                }) .then(function (response) {
+                    //TODO:向doneWorkItems添加本数据
+                    console.log(response);
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
             getLastReport: function () {
 
 
@@ -116,8 +164,8 @@
                     offWorkInfo: this.offWorkInfo,
                     overtimeInfo: this.overtimeInfo,
                     businessOutInfo: this.businessOutInfo,
-                    doneWorkItems: this.doneWorkItems,
-                    planWorkItems: this.planWorkItems,
+                    doneWorkItemIds: this.doneWorkItems,
+                    planWorkItemIds: this.planWorkItems,
                     problemInfo: this.problemInfo,
                     projectInfo: this.projectInfo,
                 })
