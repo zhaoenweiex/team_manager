@@ -53,7 +53,7 @@
                     <td class="success">计划工作项</td>
                     <td>完成情况</td>
                 </tr>
-                <tr v-for="(workItem,index) in planWorkItems">
+                <tr v-for="(workItem,index) in lastPlanWorkItems">
                     <td>{{ index+1 }}</td>
                     <td class="success">{{ workItem.content }}</td>
                     <td><div class="check-box"></div> </td>
@@ -65,7 +65,7 @@
                     <td>序号</td>
                     <td class="success">临时工作项</td>
                 </tr>
-                <tr v-for="(workItem,index) in lastPlanWorkItems">
+                <tr v-for="(workItem,index) in tmpWorkItems">
                     <td>{{ index+1 }}</td>
                     <td class="success">{{ workItem.content }}</td>
                     <td><div class="check-box"></div> </td>
@@ -105,6 +105,7 @@
             doneWorkItems: [],
             planWorkItems: [],
             lastPlanWorkItems:[],
+            tmpWorkItems:[],
             problemInfo: '',
             projectInfo: '',
             reportStatus: '',
