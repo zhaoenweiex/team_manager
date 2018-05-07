@@ -9,7 +9,9 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * Created by zhaoenwei on 2017/7/27.
+ *
+ * @author zhaoenwei
+ * @date 2017/7/27
  */
 public interface OrganizationMapper extends MyMapper<Organization> {
 }

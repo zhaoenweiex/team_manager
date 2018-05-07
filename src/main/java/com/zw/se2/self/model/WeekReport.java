@@ -99,4 +99,12 @@ public class WeekReport extends BaseEntity{
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

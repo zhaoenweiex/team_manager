@@ -10,19 +10,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by zhaoenwei on 2017/8/4.
+ *
+ * @author zhaoenwei
+ * @date 2017/8/4
  */
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/login")
     public User login(@RequestBody User user){
         String userName=user.getName();
         String password=user.getPassword();
-        User userDB=userService.findByNameAndPsw(userName,password);
-        return userDB;
+        return userService.findByNameAndPsw(userName,password);
     }
     @PostMapping
     public  User create(User user){

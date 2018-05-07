@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
 
+/**
+ * @author zhaoe
+ */
 @RestController
 @RequestMapping("org")
 public class OrganizationController {
@@ -22,16 +25,18 @@ public class OrganizationController {
 
     @PostMapping
     public Organization create(Organization organization){
-        if(orgService.add(organization))
+        if(orgService.add(organization)) {
             return organization;
-        else
+        } else {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @DeleteMapping
     public boolean delete(Long id){
-        if(orgService.delete(id))
+        if(orgService.delete(id)) {
             return true;
-        else
+        } else {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -18,19 +18,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by zhaoenwei on 2017/7/26.
+ *
+ * @author zhaoenwei
+ * @date 2017/7/26
  */
 @RestController
 @RequestMapping("/week_report")
 public class WeekReportCtrl {
     private static final Logger logger = LoggerFactory.getLogger(WeekReportCtrl.class);
-    @Autowired
-    private WeekReportService service;
+    private final WeekReportService service;
+
+    private final OrgService orgService;
+    private final UserService userService;
 
     @Autowired
-    private OrgService orgService;
-    @Autowired
-    private UserService userService;
+    public WeekReportCtrl(WeekReportService service, OrgService orgService, UserService userService) {
+        this.service = service;
+        this.orgService = orgService;
+        this.userService = userService;
+    }
 
     //提交周报
     @PostMapping
@@ -50,7 +56,7 @@ public class WeekReportCtrl {
         if (weekReport.getOrganization() != null) {
             return service.searchByOrgId(weekReport);
         } else {
-            return service.searchByUserId(weekReport);
+            return service.searchByUserId(String.valueOf(weekReport.getUser().getId()));
         }
     }
 

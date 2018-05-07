@@ -3,7 +3,9 @@ package com.zw.se2.self.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.zw.se2.self.mapper.ProjectMapper;
 import com.zw.se2.self.mapper.WeekReportMapper;
+import com.zw.se2.self.model.Project;
 import com.zw.se2.self.model.WeekReport;
 import com.zw.se2.self.service.WeekReportService;
 import com.zw.se2.self.utils.MSWordManager;
@@ -30,8 +32,14 @@ public class WeekReportServiceImpl implements WeekReportService {
     private String reportsPath;
     @Value("${templatePath}")
     private String templatePath;
+    private final WeekReportMapper weekReportMapper;
+    private final ProjectMapper projectMapper;
+
     @Autowired
-    private WeekReportMapper weekReportMapper;
+    public WeekReportServiceImpl(WeekReportMapper weekReportMapper, ProjectMapper projectMapper) {
+        this.weekReportMapper = weekReportMapper;
+        this.projectMapper = projectMapper;
+    }
 
 
     @PostConstruct
@@ -65,9 +73,12 @@ public class WeekReportServiceImpl implements WeekReportService {
     public String generateReport(List<WeekReport> reports, Map<String, String> basicInfo) {
         //生成报告
         String filePath = reportsPath + "/" + System.currentTimeMillis() + ".doc";
-        Map<String, List<String>> attenceInfoMap = generateAttenceInfo(reports);//人员名称-请假，出差，加班
-        Map<String, Map<String, List<String>>> projectInfoMap = new HashMap<>();//项目名称-角色-人员
-        Map<String, List<String>> workInfoMap = new HashMap<>();//人员名称-工作完成情况(包含上一周计划的对比)，计划情况
+        //人员名称-请假，出差，加班
+        Map<String, List<String>> attenceInfoMap = generateAttenceInfo(reports);
+        //项目名称-角色-人员
+        Map<String, Map<String, List<String>>> projectInfoMap = new HashMap<>();
+        //人员名称-工作完成情况(包含上一周计划的对比)，计划情况
+        Map<String, List<String>> workInfoMap = new HashMap<>();
         generateReportInfo(reports, attenceInfoMap, projectInfoMap, workInfoMap);
         //请假人数
         attenceInfoMap.forEach((name, infoList) -> {
@@ -102,7 +113,7 @@ public class WeekReportServiceImpl implements WeekReportService {
             employeeAttenceInfo.add(report.getOffWorkInfo());
             employeeAttenceInfo.add(report.getBusinessOutInfo());
             employeeAttenceInfo.add(report.getOvertimeInfo());
-            String userName = StringUtils.isEmpty(report.getUserName()) ? String.valueOf(report.getUserId()) : report.getUserName();
+            String userName = StringUtils.isEmpty(report.getUser().getName()) ? String.valueOf(report.getUserId()) : report.getUserName();
             attenceInfoMap.put(userName, employeeAttenceInfo);
             //出勤信息
             JSONObject jsonAttence = new JSONObject();
@@ -119,36 +130,18 @@ public class WeekReportServiceImpl implements WeekReportService {
             employeeAttenceInfo.add(report.getOffWorkInfo());
             employeeAttenceInfo.add(report.getBusinessOutInfo());
             employeeAttenceInfo.add(report.getOvertimeInfo());
-            String userName = StringUtils.isEmpty(report.getUserName()) ? String.valueOf(report.getUserId()) : report.getUserName();
+            String userName = StringUtils.isEmpty(report.getUser().getName()) ? String.valueOf(report.getUser().getId()) : report.getUser().getName();
             attenceInfoMap.put(userName, employeeAttenceInfo);
-            if (!StringUtils.isEmpty(report.getProjectInfo())) {
-                String[] projectInfos = report.getProjectInfo().split(";");
-                for (String projectInfoStr : projectInfos) {
-                    String[] projectInfo = projectInfoStr.split(",");
-                    if (projectInfo.length < 3)
-                        continue;
-                    String projectName = projectInfo[0];
-                    String role = projectInfo[1];
-                    String ratio = projectInfo[2];
-                    Map<String, List<String>> tmpProjectInfoMap = projectInfoMap.get(projectName);
-                    List<String> employeeList = new ArrayList<>();
-                    if (tmpProjectInfoMap == null) {
-                        tmpProjectInfoMap = new HashMap<>();
-                        employeeList.add(report.getUserName());
-                    } else {
-                        employeeList = tmpProjectInfoMap.get(role);
-                        if (!employeeList.contains(report.getUserName()))
-                            employeeList.add(report.getUserName());
-                    }
-                    tmpProjectInfoMap.put(role, employeeList);
-                    projectInfoMap.put(projectName, tmpProjectInfoMap);
-                }
-            }
+            modifyProjectInfo(projectInfoMap, report);
 
 
             List<String> employeeWorkInfo = new ArrayList<>();
-            employeeWorkInfo.add(report.getDoneInfo());
-            employeeWorkInfo.add(report.getPlanInfo());
+            JSONArray doneArray=new JSONArray();
+            doneArray.addAll(report.getDoneWorkItems());
+            employeeWorkInfo.add(doneArray.toJSONString());
+            JSONArray planArray=new JSONArray();
+            doneArray.addAll(report.getDoneWorkItems());
+            employeeWorkInfo.add(planArray.toJSONString());
             workInfoMap.put(userName, employeeWorkInfo);
             //出勤信息
             JSONObject jsonAttence = new JSONObject();
@@ -165,7 +158,38 @@ public class WeekReportServiceImpl implements WeekReportService {
 
         }
     }
-    //TODO:有待进一步完善
+
+    private void modifyProjectInfo(Map<String, Map<String, List<String>>> projectInfoMap, WeekReport report) {
+        //TODO:这部分逻辑要进行变化
+        //需要改为根据人员来确定项目参与情况
+        //        List<Project> projects=projectMapper.findAllByUser(userIdArray);
+
+//        if (!StringUtils.isEmpty(report.getp())) {
+//            String[] projectInfos = report.getProjectInfo().split(";");
+//            for (String projectInfoStr : projectInfos) {
+//                String[] projectInfo = projectInfoStr.split(",");
+//                if (projectInfo.length < 3) {
+//                    continue;
+//                }
+//                String projectName = projectInfo[0];
+//                String role = projectInfo[1];
+//                String ratio = projectInfo[2];
+//                Map<String, List<String>> tmpProjectInfoMap = projectInfoMap.get(projectName);
+//                List<String> employeeList = new ArrayList<>();
+//                if (tmpProjectInfoMap == null) {
+//                    tmpProjectInfoMap = new HashMap<>();
+//                    employeeList.add(report.getUser().getName());
+//                } else {
+//                    employeeList = tmpProjectInfoMap.get(role);
+//                    if (!employeeList.contains(report.getUser().getName())) {
+//                        employeeList.add(report.getUser().getName());
+//                    }
+//                }
+//                tmpProjectInfoMap.put(role, employeeList);
+//                projectInfoMap.put(projectName, tmpProjectInfoMap);
+//            }
+//        }
+    }
 
     private void writeInfo2Report(String filePath, Map<String, List<String>> attenceInfoMap, Map<String, Map<String, List<String>>> projectInfoMap, Map<String, List<String>> workInfoMap, Map<String, String> basicInfo) {
         MSWordManager msWordManager = new MSWordManager(true);
