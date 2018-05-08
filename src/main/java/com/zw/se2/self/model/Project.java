@@ -4,7 +4,7 @@ import java.util.List;
 
 //项目
 public class Project extends BaseEntity{
-    private String name;
+    private String trueName;
     private String description;
     private List<User> members;
     private List<ProjectTarget> targets;
@@ -17,12 +17,12 @@ public class Project extends BaseEntity{
         this.targets = targets;
     }
 
-    public String getName() {
-        return name;
+    public String getTrueName() {
+        return trueName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTrueName(String trueName) {
+        this.trueName = trueName;
     }
 
     public List<User> getMembers() {
@@ -36,7 +36,7 @@ public class Project extends BaseEntity{
     @Override
     public String toString() {
         return "Project{" +
-                ", name='" + name + '\'' +
+                ", trueName='" + trueName + '\'' +
                 ", members=" + members +
                 '}';
     }

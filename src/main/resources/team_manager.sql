@@ -35,7 +35,7 @@ CREATE TABLE `workitem` (
 DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '项目名称',
+  `trueName` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '项目名称',
   `description` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '项目描述',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目信息';
@@ -66,7 +66,7 @@ CREATE TABLE `project_projecttarget` (
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
+  `trueName` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
   `password` varchar(32) DEFAULT NULL COMMENT '密码',
   `type` varchar(2) DEFAULT NULL COMMENT '用户类型',
   `enabled` int(2) DEFAULT NULL COMMENT '是否可用',
@@ -79,7 +79,7 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `organization`;
 CREATE TABLE `organization` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '组织机构名称',
+  `trueName` varchar(32) NOT NULL DEFAULT '' COMMENT '组织机构名称',
   `parentid` bigint(20) DEFAULT NULL COMMENT '上级组织机构',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='组织机构表';

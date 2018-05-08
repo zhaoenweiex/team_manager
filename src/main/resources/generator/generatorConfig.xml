@@ -7,14 +7,14 @@
     <properties resource="application-dev.properties"/>
 
     <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
-        <property name="beginningDelimiter" value="`"/>
-        <property name="endingDelimiter" value="`"/>
+        <property trueName="beginningDelimiter" value="`"/>
+        <property trueName="endingDelimiter" value="`"/>
 
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="tk.mybatis.springboot.util.MyMapper"/>
+            <property trueName="mappers" value="tk.mybatis.springboot.util.MyMapper"/>
         </plugin>
 
-        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+        <jdbcConnection driverClass="${spring.datasource.driver-class-trueName}"
                         connectionURL="${spring.datasource.url}"
                         userId="${spring.datasource.username}"
                         password="${spring.datasource.password}">

@@ -1,5 +1,6 @@
 package com.zw.se2.self.ctrl;
 
+import com.zw.se2.self.ctrl.dto.WeekReportDto;
 import com.zw.se2.self.model.WeekReport;
 import com.zw.se2.self.service.OrgService;
 import com.zw.se2.self.service.UserService;
@@ -52,11 +53,11 @@ public class WeekReportCtrl {
     }
     //查询
     @GetMapping
-    public List<WeekReport> getReport(WeekReport weekReport) {
-        if (weekReport.getOrganization() != null) {
-            return service.searchByOrgId(weekReport);
+    public List<WeekReport> getReport(WeekReportDto weekReportDto) {
+        if (weekReportDto.getOrganization() != null) {
+            return service.searchByOrgId(weekReportDto);
         } else {
-            return service.searchByUserId(String.valueOf(weekReport.getUser().getId()));
+            return service.searchByUserId(weekReportDto.getUserId());
         }
     }
 

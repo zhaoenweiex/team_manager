@@ -32,7 +32,7 @@ import javax.persistence.*;
  */
 public class BaseEntity {
     @Id
-    @Column(name = "Id")
+    @Column(name = "uid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

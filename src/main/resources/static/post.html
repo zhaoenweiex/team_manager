@@ -35,22 +35,14 @@
             <li>出差情况</li>
             <input class="form-control" v-model="businessOutInfo" placeholder="请添加">
         </div>
-        <div>
-            <h2>项目信息</h2>
-            <li>参加项目,角色,投入比例</li>
-            <li>多个项目用英文分号隔开</li>
-            <input class="form-control" v-model="projectInfo" placeholder="">
-        </div>
         <!--这个地方需要完成情况需要与上周计划关联，计划要与项目关联-->
         <div>
             <h2><span class="glyphicon glyphicon-star" aria-hidden="true"></span>任务信息</h2>
             <li>本周工作完成情况</li>
-            <button>添加临时工作项</button>
-            <!--TODO:本周完成情况要对应上周做的计划-->
             <table class="table table-striped" >
                 <tr>
                     <td>序号</td>
-                    <td class="success">计划工作项</td>
+                    <td class="success">上周计划工作项</td>
                     <td>完成情况</td>
                 </tr>
                 <tr v-for="(workItem,index) in lastPlanWorkItems">

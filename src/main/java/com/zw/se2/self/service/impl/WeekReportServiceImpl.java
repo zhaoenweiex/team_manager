@@ -1,11 +1,10 @@
 package com.zw.se2.self.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zw.se2.self.mapper.ProjectMapper;
 import com.zw.se2.self.mapper.WeekReportMapper;
-import com.zw.se2.self.model.Project;
+import com.zw.se2.self.model.User;
 import com.zw.se2.self.model.WeekReport;
 import com.zw.se2.self.service.WeekReportService;
 import com.zw.se2.self.utils.MSWordManager;
@@ -23,7 +22,9 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by zhaoenwei on 2017/7/27.
+ *
+ * @author zhaoenwei
+ * @date 2017/7/27
  */
 @Service
 public class WeekReportServiceImpl implements WeekReportService {
@@ -86,7 +87,9 @@ public class WeekReportServiceImpl implements WeekReportService {
                 int vacationMum = 0;
                 if (basicInfo.containsKey("vacationNum"))
 
+                {
                     vacationMum = Integer.parseInt(basicInfo.get("vacationNum"));
+                }
                 basicInfo.put("vacationNum", String.valueOf(vacationMum + 1));
             }
         });
@@ -96,9 +99,9 @@ public class WeekReportServiceImpl implements WeekReportService {
         attenceInfoMap.forEach((name, infoList) -> {
             if (infoList != null && infoList.size() > 1 && !(infoList.get(1).equalsIgnoreCase("无"))) {
                 int bussinessNum = 0;
-                if (basicInfo.containsKey("bussinessNum"))
-
+                if (basicInfo.containsKey("bussinessNum")) {
                     bussinessNum = Integer.parseInt(basicInfo.get("bussinessNum"));
+                }
                 basicInfo.put("bussinessNum", String.valueOf(bussinessNum + 1));
             }
         });
@@ -113,8 +116,12 @@ public class WeekReportServiceImpl implements WeekReportService {
             employeeAttenceInfo.add(report.getOffWorkInfo());
             employeeAttenceInfo.add(report.getBusinessOutInfo());
             employeeAttenceInfo.add(report.getOvertimeInfo());
-            String userName = StringUtils.isEmpty(report.getUser().getName()) ? String.valueOf(report.getUserId()) : report.getUserName();
-            attenceInfoMap.put(userName, employeeAttenceInfo);
+            User user = report.getUser();
+            if (user != null) {
+                String userName = StringUtils.isEmpty(user.getName()) ? String.valueOf(user.getId()) : user.getName();
+
+                attenceInfoMap.put(userName, employeeAttenceInfo);
+            }
             //出勤信息
             JSONObject jsonAttence = new JSONObject();
             jsonAttence.putAll(attenceInfoMap);
@@ -136,10 +143,10 @@ public class WeekReportServiceImpl implements WeekReportService {
 
 
             List<String> employeeWorkInfo = new ArrayList<>();
-            JSONArray doneArray=new JSONArray();
+            JSONArray doneArray = new JSONArray();
             doneArray.addAll(report.getDoneWorkItems());
             employeeWorkInfo.add(doneArray.toJSONString());
-            JSONArray planArray=new JSONArray();
+            JSONArray planArray = new JSONArray();
             doneArray.addAll(report.getDoneWorkItems());
             employeeWorkInfo.add(planArray.toJSONString());
             workInfoMap.put(userName, employeeWorkInfo);
@@ -178,11 +185,11 @@ public class WeekReportServiceImpl implements WeekReportService {
 //                List<String> employeeList = new ArrayList<>();
 //                if (tmpProjectInfoMap == null) {
 //                    tmpProjectInfoMap = new HashMap<>();
-//                    employeeList.add(report.getUser().getName());
+//                    employeeList.add(report.getUser().getTrueName());
 //                } else {
 //                    employeeList = tmpProjectInfoMap.get(role);
-//                    if (!employeeList.contains(report.getUser().getName())) {
-//                        employeeList.add(report.getUser().getName());
+//                    if (!employeeList.contains(report.getUser().getTrueName())) {
+//                        employeeList.add(report.getUser().getTrueName());
 //                    }
 //                }
 //                tmpProjectInfoMap.put(role, employeeList);
@@ -225,8 +232,9 @@ public class WeekReportServiceImpl implements WeekReportService {
         } finally {
             msWordManager.close();
             msWordManager.closeDocument();
-            if (copyTemplateFile.exists())
+            if (copyTemplateFile.exists()) {
                 copyTemplateFile.deleteOnExit();
+            }
         }
 
     }
@@ -284,12 +292,12 @@ public class WeekReportServiceImpl implements WeekReportService {
     }
 
     @Override
-    public WeekReport getLastReportByUserId(String userId){
-       List<WeekReport> reportList= weekReportMapper.findByUserId(userId);
-       if (reportList!=null&&reportList.size()>0)
-       {
-           return reportList.get(0);
-       }else
-           return null;
+    public WeekReport getLastReportByUserId(String userId) {
+        List<WeekReport> reportList = weekReportMapper.findByUserId(userId);
+        if (reportList != null && reportList.size() > 0) {
+            return reportList.get(0);
+        } else {
+            return null;
+        }
     }
 }

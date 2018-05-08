@@ -59,7 +59,7 @@
         methods: {
             login: function () {
                 axios.post('/user/login', {
-                    name: this.userName,
+                    trueName: this.userName,
                     password: this.password,
                 })
                     .then(function (response) {

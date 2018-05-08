@@ -27,7 +27,7 @@
 <mapper namespace="com.zw.se2.self.mapper.ProjectMapper">
     <resultMap type="com.zw.se2.self.model.Project" id="projectMap">
         <id property="id" column="pid" />
-        <result property="name" column="name" />
+        <result property="trueName" column="trueName" />
         <result property="description" column="description" />
         <collection  property="members"  resultMap="userResult"/>
         <collection  property="targets"  resultMap="projectTargetResult"/>
