@@ -36,6 +36,6 @@ public interface WeekReportMapper  extends MyMapper<WeekReport> {
             @Result(property = "userName", column = "user_name", javaType = String.class, jdbcType = JdbcType.VARCHAR)
     })
     List<WeekReport> findByOrgId(WeekReport weekReport);
-    @Select( "select * from week_report where 1=1 and user_id=#{userId} sort by create_time desc")
+    @Select( "select * from weekreport where userid=#{userId} order by createtime desc")
     List<WeekReport> findByUserId(String userId);
 }
