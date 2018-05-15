@@ -9,16 +9,25 @@ CREATE TABLE `weekreport` (
   `businessOutInfo` varchar(511) DEFAULT FALSE COMMENT '出差信息',
   `organizationId` bigint(20) DEFAULT NULL COMMENT '所属组织Id',
   `userid` bigint(20) DEFAULT NULL COMMENT '人员',
+  constraint fk_weekreport_userid foreign key(userid) references user(uid),
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周报';
-DROP TABLE IF EXISTS `weekreport_workitem`;
-CREATE TABLE `weekreport_workitem` (
+DROP TABLE IF EXISTS `weekreport_planworkitem`;
+CREATE TABLE `weekreport_planworkitem` (
   `weekreportid` bigint(20),
-  `workitemid` bigint(255),
-  constraint fk_weekreportid foreign key(weekreportid) references weekreport(weekreport),
-  constraint fk_workitemid foreign key(workitemid) references workitem(id),
-  PRIMARY KEY (`projectid`,`userid`)
-} ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周报和工作项关联表';
+  `planworkitemid` bigint(255),
+  constraint fk_wp_weekreportid foreign key(weekreportid) references weekreport(id),
+  constraint fk_wp_planworkitemid foreign key(planworkitemid) references workitem(wid),
+  PRIMARY KEY (`weekreportid`,`planworkitemid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周报和计划工作项关联表';
+CREATE TABLE `weekreport_doneworkitem` (
+  `weekreportid` bigint(20),
+  `doneworkitemid` bigint(255),
+  constraint fk_wd_weekreportid foreign key(weekreportid) references weekreport(id),
+  constraint fk_wd_doneworkitemid foreign key(doneworkitemid) references workitem(wid),
+  PRIMARY KEY (`weekreportid`,`doneworkitemid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='周报和完成工作项关联表';
+
 DROP TABLE IF EXISTS `workitem`;
 CREATE TABLE `workitem` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -65,7 +74,7 @@ CREATE TABLE `project_projecttarget` (
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) NOT NULL AUTO_INCREMENT,
   `trueName` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
   `password` varchar(32) DEFAULT NULL COMMENT '密码',
   `type` varchar(2) DEFAULT NULL COMMENT '用户类型',
