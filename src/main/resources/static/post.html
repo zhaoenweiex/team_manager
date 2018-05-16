@@ -42,7 +42,7 @@
             <table class="table table-striped">
                 <tr>
                     <td>序号</td>
-                    <td class="success">上周计划工作项</td>
+                    <td class="success">计划项</td>
                     <td>完成情况</td>
                     <td>所属项目</td>
                 </tr>
@@ -56,7 +56,7 @@
                 </tr>
             </table>
             <li>
-                <button type="submit" class="btn btn-default" v-on:onclick="addTempWorkItem()">新增临时工作项</button>
+                <button type="submit" class="btn btn-default" v-on:onclick="showAddTempWorkItemPanel()">新增临时工作项</button>
             </li>
             <table class="table table-striped">
                 <tr>
@@ -75,7 +75,7 @@
             </table>
             <li>下周工作计划</li>
             <li>
-                <button type="submit" class="btn btn-default" v-on:onclick="addPlanWorkItem()">新增计划工作项</button>
+                <button type="submit" class="btn btn-default" v-on:onclick="addPlanWorkItem()">新增</button>
             </li>
             <table class="table table-striped">
                 <tr>
@@ -97,6 +97,14 @@
     <button type="submit" class="btn btn-default" v-on:click="submit()">提交</button>
     <li>提交状态</li>
     <label>{{reportStatus}}</label>
+</div>
+<div id="addTempWorkItemPanel" style="display:none">
+    <button class="btn btn-default" v-on:click="confirmAddTempWorkItem()">确认</button>
+    <button type="reset" class="btn btn-default" v-on:click="cancelAddTempWorkItem()">取消</button>
+</div>
+<div id="addPlanWorkItemPanel" style="display:none">
+    <button class="btn btn-default" v-on:click="confirmAddPlanWorkItem()">确认</button>
+    <button type="reset" class="btn btn-default" v-on:click="cancelAddPlanWorkItem()">取消</button>
 </div>
 <script src="./CommonUtil.js"></script>
 <script>
@@ -137,18 +145,12 @@
 
         },
         methods: {
-            addPlanWorkItem: function () {
-                axios.post('/workItem', {
-                    //todo:补充计划项
-                }).then(function (response) {
-                    //TODO:向planWorkItems添加本数据
-                    console.log(response);
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+            showAddPlanWorkItemPanel: function () {
+                //弹出新增工作项的界面
+                $("#addTempWorkItemPanel").show();
             },
-            addTempWorkItem: function () {
+            //确认增加工作线
+            confirmAddPlanWorkItem:function(){
                 axios.post('/workItem', {
                     //todo:补充添加工作项
                 }).then(function (response) {
@@ -158,6 +160,30 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            cancelAddPlanWorkItem:function(){
+                //关闭界面
+                $("#addTempWorkItemPanel").hide();
+            },
+            showAddTempWorkItemPanel: function () {
+                //弹出新增工作项的界面
+              $("#addTempWorkItemPanel").show();
+            },
+            //确认增加工作线
+            confirmAddTempWorkItem:function(){
+                axios.post('/workItem', {
+                    //todo:补充添加工作项
+                }).then(function (response) {
+                    //TODO:向doneWorkItems添加本数据
+                    console.log(response);
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            cancelAddTempWorkItem:function(){
+                //关闭界面
+                $("#addTempWorkItemPanel").hide();
             },
             getLastReport: function () {
 
