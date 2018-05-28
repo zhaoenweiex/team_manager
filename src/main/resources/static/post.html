@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -98,11 +98,21 @@
     <li>提交状态</li>
     <label>{{reportStatus}}</label>
 </div>
+<!--TODO:组件化-->
 <div id="addTempWorkItemPanel" style="display:none">
+    <span><label>工作项内容</label><input id="workItemContent"/></span>
+    <!--TODO:获取当前项目，组件化-->
+    <span><label>所属项目</label><select id="workItemPorject"/></select></span>
+    <span><label>备注</label><input id="remark"/></span>
     <button class="btn btn-default" v-on:click="confirmAddTempWorkItem()">确认</button>
     <button type="reset" class="btn btn-default" v-on:click="cancelAddTempWorkItem()">取消</button>
 </div>
+<!--TODO:组件化-->
 <div id="addPlanWorkItemPanel" style="display:none">
+    <span><label>工作项内容</label><input id="planWorkItemContent"/></span>
+    <!--获取当前项目-->
+    <span><label>所属项目</label><select id="planWorkItemPorject"/></select></span>
+    <span><label>备注</label><input id="planRemark"/></span>
     <button class="btn btn-default" v-on:click="confirmAddPlanWorkItem()">确认</button>
     <button type="reset" class="btn btn-default" v-on:click="cancelAddPlanWorkItem()">取消</button>
 </div>
