@@ -55,9 +55,7 @@
                     <td class="warning">{{ workItem.belongProject }}</td>
                 </tr>
             </table>
-            <li>
-                <button type="submit" class="btn btn-default" v-on:onclick="showAddTempWorkItemPanel()">新增临时工作项</button>
-            </li>
+                <button type="submit" class="btn btn-default" v-on:click="showAddTempWorkItemPanel()">新增临时工作项</button>
             <table class="table table-striped">
                 <tr>
                     <td>序号</td>
@@ -75,7 +73,7 @@
             </table>
             <li>下周工作计划</li>
             <li>
-                <button type="submit" class="btn btn-default" v-on:onclick="addPlanWorkItem()">新增</button>
+                <button type="submit" class="btn btn-default" v-on:click="showAddPlanWorkItemPanel()">新增</button>
             </li>
             <table class="table table-striped">
                 <tr>
@@ -97,25 +95,26 @@
     <button type="submit" class="btn btn-default" v-on:click="submit()">提交</button>
     <li>提交状态</li>
     <label>{{reportStatus}}</label>
+    <div id="addTempWorkItemPanel" style="display:none">
+        <span><label>工作项内容</label><input id="workItemContent"/></span>
+        <!--TODO:获取当前项目，组件化-->
+        <span><label>所属项目</label><select id="workItemPorject"/></select></span>
+        <span><label>备注</label><input id="remark"/></span>
+        <button class="btn btn-default" v-on:click="confirmAddTempWorkItem()">确认</button>
+        <button type="reset" class="btn btn-default" v-on:click="cancelAddTempWorkItem()">取消</button>
+    </div>
+    <!--TODO:组件化-->
+    <div id="addPlanWorkItemPanel" style="display:none">
+        <span><label>工作项内容</label><input id="planWorkItemContent"/></span>
+        <!--获取当前项目-->
+        <span><label>所属项目</label><select id="planWorkItemPorject"/></select></span>
+        <span><label>备注</label><input id="planRemark"/></span>
+        <button class="btn btn-default" v-on:click="confirmAddPlanWorkItem()">确认</button>
+        <button type="reset" class="btn btn-default" v-on:click="cancelAddPlanWorkItem()">取消</button>
+    </div>
 </div>
 <!--TODO:组件化-->
-<div id="addTempWorkItemPanel" style="display:none">
-    <span><label>工作项内容</label><input id="workItemContent"/></span>
-    <!--TODO:获取当前项目，组件化-->
-    <span><label>所属项目</label><select id="workItemPorject"/></select></span>
-    <span><label>备注</label><input id="remark"/></span>
-    <button class="btn btn-default" v-on:click="confirmAddTempWorkItem()">确认</button>
-    <button type="reset" class="btn btn-default" v-on:click="cancelAddTempWorkItem()">取消</button>
-</div>
-<!--TODO:组件化-->
-<div id="addPlanWorkItemPanel" style="display:none">
-    <span><label>工作项内容</label><input id="planWorkItemContent"/></span>
-    <!--获取当前项目-->
-    <span><label>所属项目</label><select id="planWorkItemPorject"/></select></span>
-    <span><label>备注</label><input id="planRemark"/></span>
-    <button class="btn btn-default" v-on:click="confirmAddPlanWorkItem()">确认</button>
-    <button type="reset" class="btn btn-default" v-on:click="cancelAddPlanWorkItem()">取消</button>
-</div>
+
 <script src="./CommonUtil.js"></script>
 <script>
     var app = new Vue({
@@ -160,7 +159,7 @@
                 $("#addTempWorkItemPanel").show();
             },
             //确认增加工作线
-            confirmAddPlanWorkItem:function(){
+            confirmAddPlanWorkItem: function(){
                 axios.post('/workItem', {
                     //todo:补充添加工作项
                 }).then(function (response) {
@@ -171,7 +170,7 @@
                         console.log(error);
                     });
             },
-            cancelAddPlanWorkItem:function(){
+            cancelAddPlanWorkItem: function(){
                 //关闭界面
                 $("#addTempWorkItemPanel").hide();
             },
@@ -180,7 +179,7 @@
               $("#addTempWorkItemPanel").show();
             },
             //确认增加工作线
-            confirmAddTempWorkItem:function(){
+            confirmAddTempWorkItem: function(){
                 axios.post('/workItem', {
                     //todo:补充添加工作项
                 }).then(function (response) {
@@ -191,7 +190,7 @@
                         console.log(error);
                     });
             },
-            cancelAddTempWorkItem:function(){
+            cancelAddTempWorkItem: function(){
                 //关闭界面
                 $("#addTempWorkItemPanel").hide();
             },
