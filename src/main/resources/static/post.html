@@ -158,12 +158,19 @@
                 //弹出新增工作项的界面
                 $("#addTempWorkItemPanel").show();
             },
-            //确认增加工作线
+            //确认增加计划工作项
             confirmAddPlanWorkItem: function(){
                 axios.post('/workItem', {
-                    //todo:补充添加工作项
+                    userId: 1,
+                    //TODO:下面的代码有待实现
+                    content: this.offWorkInfo,
+                    overtimeInfo: this.overtimeInfo,
+                    status: this.businessOutInfo,
+                    planFlag: this.doneWorkItems,
+                    remark: this.planWorkItems,
+                    belongProjectId: this.problemInfo,
                 }).then(function (response) {
-                    //TODO:向doneWorkItems添加本数据
+                    //todo:补充添加计划工作项
                     console.log(response);
                 })
                     .catch(function (error) {
